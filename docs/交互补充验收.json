@@ -23,12 +23,22 @@
       "detail": "删除该会话？"
     },
     {
-      "check": "加号菜单弹出",
+      "check": "加号菜单与二级面板已移除",
       "ok": true,
       "detail": ""
     },
     {
-      "check": "加号二级面板弹出",
+      "check": "加号位置已是上传附件按钮",
+      "ok": true,
+      "detail": "上传附件"
+    },
+    {
+      "check": "选择文件后出现附件条",
+      "ok": true,
+      "detail": "['时延日志样例.csv']"
+    },
+    {
+      "check": "附件条可移除",
       "ok": true,
       "detail": ""
     },

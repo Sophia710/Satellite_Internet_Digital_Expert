@@ -70,7 +70,7 @@ app/
 - **文件树**：与产物内容并排贴在右栏右侧（240px，`data-open` 控制开合），不是铺在底部；展开时若预览区会被压到 420px 以下，自动把右栏撑到 720px，避免表格被挤成横向滚动条。当前文件按文件名回指高亮，点击即切页签。树里共 8 个文件：md / xlsx / docx / html 报告 + 3 个图表 html + 1 张 png。
 - **新标签页**：启动页在内容区之外，`data-tab="launcher"` 时内容区整块隐藏、启动页照常显示。
 - **左栏**：可折叠；项目与会话行在 hover 时出现「⋯」菜单（重命名 / 置顶 / 移动 / 删除），删除走确认框。
-- **输入框**：草稿按会话隔离、Enter 发送 / Shift+Enter 换行、3–10 行 autosize、加号二级菜单、模型浮层、`@` 提及、附件 chip、语音三态。
+- **输入框**：草稿按会话隔离、Enter 发送 / Shift+Enter 换行、3–10 行 autosize、上传附件（原「＋」按钮已替换为附件按钮，本版本只保留附件上传，点选文件生成附件 chip、可逐个移除）、模型浮层、`@` 提及、语音三态。
 - **主题**：浅/深双主题，切换持久化。
 
 ## 本地运行
@@ -95,15 +95,15 @@ node scripts\build-single.mjs     # dist → 单文件 原型.html（残留外�
 cd app; python -m http.server 4600 --directory dist
 cd ..
 python scripts\verify.py            # 25 条断言 + 27 张截图
-python scripts\verify-interactions.py  # 27 条交互断言（菜单/确认框/提及/语音/文件树/右栏/产物格式分流）
+python scripts\verify-interactions.py  # 29 条交互断言（菜单/确认框/附件上传/提及/语音/文件树/右栏/产物格式分流）
 ```
 
 最近一次结果：
 
 - `scripts/audit-src.mjs` → `ok: true`（scanned 40，rules 6，routerRules 4）
 - `scripts/verify.py` → **25/25 通过**，截图在 `docs/验收截图/`，报告 `docs/验收报告.json`
-- `scripts/verify-interactions.py` → **27/27 通过**（浮层 9 条 + 文件树布局 5 条 + 启动页 + 右栏拉伸范围 6 条 + 产物格式分流 5 条 + console），报告 `docs/交互补充验收.json`
-- `scripts/build-single.mjs` → `原型.html` 386,757 字节（`cssInlined 1 / jsInlined 1 / externalRefs 0`，含图表 SVG 与 PNG data URI），双击可离线打开
+- `scripts/verify-interactions.py` → **29/29 通过**（浮层 8 条 + 附件上传 4 条 + 文件树布局 5 条 + 启动页 + 右栏拉伸范围 6 条 + 产物格式分流 5 条 + console），报告 `docs/交互补充验收.json`
+- `scripts/build-single.mjs` → `原型.html` 378,443 字节（`cssInlined 1 / jsInlined 1 / externalRefs 0`，含图表 SVG 与 PNG data URI），双击可离线打开
 
 ## 交付物说明
 

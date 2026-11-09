@@ -976,129 +976,14 @@ button.ds-launch-row:hover {
   color: var(--ds-on-primary);
 }
 
-.ds-composer__plus,
+.ds-composer__attach,
 .ds-composer__voice {
   flex: none;
 }
 
-.ds-composer__plus:disabled,
+.ds-composer__attach:disabled,
 .ds-composer__send:disabled {
   cursor: not-allowed;
-}
-
-/* 兜底置于模型钮常规规则之后：composer ≤240px 收起模型钮 */
-@container (max-width: 240px) {
-  .ds-model-switch {
-    display: none;
-  }
-}
-
-/* ---------- CP-25 加号收纳菜单（卡面同 popover；JS 打开时搬 body 后 fixed） ---------- */
-.ds-composer__plus[aria-expanded="true"] {
-  background-color: var(--ds-active-fill);
-  color: var(--ds-text-primary);
-}
-
-.ds-plus-menu,
-.ds-plus-sub {
-  position: fixed;
-  z-index: 1000;
-  box-sizing: border-box;
-  padding: var(--ds-space-1);
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-panel);
-  background: var(--ds-surface-raised);
-  box-shadow: var(--ds-shadow-raised);
-}
-
-.ds-plus-menu {
-  width: 240px;
-}
-
-.ds-plus-sub {
-  width: 232px;
-}
-
-.ds-plus-menu[hidden],
-.ds-plus-sub[hidden] {
-  display: none;
-}
-
-.ds-plus-menu__item {
-  display: flex;
-  align-items: center;
-  gap: var(--ds-space-2);
-  box-sizing: border-box;
-  width: 100%;
-  height: 32px;
-  padding: 0 var(--ds-space-2);
-  border: none;
-  border-radius: var(--ds-radius-chip);
-  background: transparent;
-  color: var(--ds-text-primary);
-  font-family: inherit;
-  font-size: var(--ds-fs-compact);
-  font-weight: var(--ds-weight-regular);
-  /* 1.2 而非 1：label overflow:hidden 会裁掉下划线字符下沿；32px 固定高 flex 居中 */
-  line-height: 1.2;
-  text-align: left;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.ds-plus-menu__item:hover,
-.ds-plus-menu__item.is-focused {
-  background: var(--ds-active-fill);
-}
-
-.ds-plus-menu__icon {
-  flex: none;
-  width: 18px;
-  height: 18px;
-  color: var(--ds-text-secondary);
-}
-
-.ds-plus-menu__item:hover .ds-plus-menu__icon,
-.ds-plus-menu__item.is-focused .ds-plus-menu__icon {
-  color: var(--ds-text-primary);
-}
-
-.ds-plus-menu__label {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ds-plus-menu__caret {
-  flex: none;
-  width: 16px;
-  height: 16px;
-  color: var(--ds-text-tertiary);
-}
-
-.ds-plus-menu__sep {
-  height: 1px;
-  margin: var(--ds-space-1) calc(2 * var(--ds-space-1));
-  background: var(--ds-divider);
-}
-
-/* 二级面板标题：不可选弱文案行 */
-.ds-plus-sub__title {
-  padding: var(--ds-space-1) var(--ds-space-2);
-  color: var(--ds-text-tertiary);
-  font-size: var(--ds-fs-caption);
-  line-height: 1.4;
-}
-
-/* 面板底部「管理…/探索更多…」弱入口 */
-.ds-plus-menu__item--weak,
-.ds-plus-menu__item--weak .ds-plus-menu__icon {
-  color: var(--ds-text-secondary);
-}
-
-.ds-plus-menu__item--weak:hover .ds-plus-menu__icon {
-  color: var(--ds-text-primary);
 }
 
 /* ===== [复制区] 组件CSS：conversation-header ===== */

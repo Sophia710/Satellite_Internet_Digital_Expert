@@ -4,6 +4,7 @@ from playwright.sync_api import sync_playwright
 BASE = "http://127.0.0.1:4600/index.html"
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 SHOTS = r"D:\XW\Project\Satellite_Internet_Digital_Expert\docs\验收截图"
+SAMPLE_FILE = r"D:\XW\Project\Satellite_Internet_Digital_Expert\docs\验收样例\时延日志样例.csv"
 results = []
 
 def check(name, ok, detail=""):
@@ -44,18 +45,26 @@ with sync_playwright() as p:
     pg.locator(".ds-dialog__cancel").click()
     pg.wait_for_timeout(300)
 
-    # 加号菜单与二级面板
-    pg.locator(".ds-composer__plus").click()
-    pg.wait_for_timeout(400)
-    check("加号菜单弹出", pg.locator(".ds-plus-menu").count() == 1)
-    pg.screenshot(path=SHOTS + r"\23-加号菜单.png")
-    sub = pg.locator(".ds-plus-menu__item[data-plus-sub]").first
-    sub.click()
-    pg.wait_for_timeout(400)
-    check("加号二级面板弹出", pg.locator(".ds-plus-sub").count() >= 1)
-    pg.screenshot(path=SHOTS + r"\24-加号二级面板.png")
-    pg.keyboard.press("Escape")
+    # 输入框加号 → 上传附件（本版本只保留附件上传，加号菜单与二级面板不再存在）
+    check(
+        "加号菜单与二级面板已移除",
+        pg.locator(".ds-plus-menu").count() == 0 and pg.locator(".ds-plus-sub").count() == 0 and pg.locator(".ds-composer__plus").count() == 0,
+    )
+    attach_btn = pg.locator(".ds-composer__attach")
+    check(
+        "加号位置已是上传附件按钮",
+        attach_btn.count() == 1 and attach_btn.get_attribute("aria-label") == "上传附件",
+        attach_btn.get_attribute("aria-label") if attach_btn.count() else None,
+    )
+    pg.set_input_files(".ds-composer__file", SAMPLE_FILE)
     pg.wait_for_timeout(300)
+    chips = pg.locator(".ds-attach-chip").all_inner_texts()
+    check("选择文件后出现附件条", len(chips) == 1 and "时延日志样例.csv" in chips[0], chips)
+    pg.screenshot(path=SHOTS + r"\23-上传附件.png")
+    pg.locator(".ds-attach-chip__x").first.click()
+    pg.wait_for_timeout(300)
+    check("附件条可移除", pg.locator(".ds-attach-chip").count() == 0)
+    pg.screenshot(path=SHOTS + r"\24-附件移除后.png")
 
     # 模型浮层
     pg.locator(".ds-model-switch").click()

@@ -26,16 +26,15 @@
 
       <div class="ds-composer__bar">
         <button
-          ref="plusRef"
+          ref="attachRef"
           type="button"
-          class="ds-icon-btn ds-composer__plus"
-          aria-label="更多输入能力"
-          aria-haspopup="menu"
-          :aria-expanded="plusOpen ? 'true' : 'false'"
+          class="ds-icon-btn ds-composer__attach"
+          aria-label="上传附件"
+          title="上传附件"
           :disabled="generating"
-          @click.stop="togglePlus"
+          @click.stop="pickFiles"
         >
-          <Icon name="plus" :size="18" />
+          <Icon name="paperclip" :size="18" />
         </button>
 
         <button
@@ -83,70 +82,6 @@
     </div>
 
     <Teleport to="body">
-      <!-- 加号收纳菜单：fixed 定位，向上展开，支持二级面板 -->
-      <div
-        v-if="plusOpen"
-        ref="menuRef"
-        class="ds-plus-menu"
-        role="menu"
-        aria-label="更多输入能力"
-        :style="{ left: menuLeft + 'px', top: menuTop + 'px' }"
-        @pointerleave="scheduleSubClose"
-        @keydown="onMenuKeydown"
-      >
-        <button type="button" role="menuitem" class="ds-plus-menu__item" @click="invokeLeaf('add-context')">
-          <Icon name="hash" :size="18" icon-class="ds-plus-menu__icon" />
-          <span class="ds-plus-menu__label">添加知识库</span>
-        </button>
-        <button type="button" role="menuitem" class="ds-plus-menu__item" @click="invokeLeaf('attachment')">
-          <Icon name="paperclip" :size="18" icon-class="ds-plus-menu__icon" />
-          <span class="ds-plus-menu__label">上传附件</span>
-        </button>
-        <div class="ds-plus-menu__sep" role="separator"></div>
-
-        <button
-          v-for="entry in plusGroups"
-          :key="entry.key"
-          type="button"
-          role="menuitem"
-          class="ds-plus-menu__item"
-          :data-plus-sub="entry.key"
-          aria-haspopup="menu"
-          :aria-expanded="currentSub === entry.key ? 'true' : 'false'"
-          @pointerenter="openSub(entry.key, $event)"
-          @focusin="openSub(entry.key, $event)"
-          @click.stop="openSub(entry.key, $event)"
-        >
-          <Icon :name="entry.icon" :size="18" icon-class="ds-plus-menu__icon" />
-          <span class="ds-plus-menu__label">{{ entry.label }}</span>
-          <Icon name="chevron-right" :size="16" icon-class="ds-plus-menu__caret" />
-        </button>
-      </div>
-
-      <div
-        v-if="plusOpen && currentSub"
-        ref="subRef"
-        class="ds-plus-sub"
-        role="menu"
-        :aria-label="currentSubLabel"
-        :style="{ left: subLeft + 'px', top: subTop + 'px' }"
-        @pointerenter="cancelSubClose"
-        @pointerleave="scheduleSubClose"
-      >
-        <div class="ds-plus-sub__title">{{ subTitle }}</div>
-        <button
-          v-for="leaf in subLeaves"
-          :key="leaf.label"
-          type="button"
-          role="menuitem"
-          class="ds-plus-menu__item"
-          @click="invokeLeaf(leaf.action)"
-        >
-          <Icon :name="leaf.icon" :size="18" icon-class="ds-plus-menu__icon" />
-          <span class="ds-plus-menu__label">{{ leaf.label }}</span>
-        </button>
-      </div>
-
       <!-- @ 提及浮层 -->
       <div
         v-if="mentionOpen"
@@ -199,27 +134,18 @@ const MIN_LINES = 3;
 const MAX_LINES = 10;
 
 const textareaRef = ref(null);
-const plusRef = ref(null);
+const attachRef = ref(null);
 const voiceRef = ref(null);
 const modelRef = ref(null);
 const fileRef = ref(null);
-const menuRef = ref(null);
-const subRef = ref(null);
 const mentionRef = ref(null);
 
 const text = ref('');
 const attachments = ref([]);
 const composing = ref(false);
-const plusOpen = ref(false);
-const currentSub = ref(null);
 const modelOpen = ref(false);
 const modelName = ref('');
 const voiceState = ref('idle');
-
-const menuLeft = ref(0);
-const menuTop = ref(0);
-const subLeft = ref(0);
-const subTop = ref(0);
 
 const mentionOpen = ref(false);
 const mentionQuery = ref('');
@@ -227,43 +153,9 @@ const mentionFocus = ref('');
 const mentionLeft = ref(0);
 const mentionTop = ref(0);
 let mentionRange = null;
-let hoverTimer = null;
 let draftTimer = null;
 let modelPopoverClose = null;
 
-const PLUS_GROUPS = [
-  { key: 'command', icon: 'terminal', label: '命令', title: '可用命令', leaves: [
-    { icon: 'terminal', label: '分位统计', action: 'command-item' },
-    { icon: 'terminal', label: '突变点检测', action: 'command-item' },
-    { icon: 'terminal', label: '口径换算', action: 'command-item' },
-    { icon: 'sliders', label: '管理命令', action: 'manage-command' },
-    { icon: 'external-link', label: '探索更多命令', action: 'explore-command' }
-  ] },
-  { key: 'plugin', icon: 'grid', label: '插件', title: '可用插件', leaves: [
-    { icon: 'grid', label: '日志解析', action: 'plugin-item' },
-    { icon: 'grid', label: '时序异常检测', action: 'plugin-item' },
-    { icon: 'grid', label: '图表生成', action: 'plugin-item' },
-    { icon: 'sliders', label: '管理插件', action: 'manage-plugin' },
-    { icon: 'external-link', label: '探索更多插件', action: 'explore-plugin' }
-  ] },
-  { key: 'integration-1', icon: 'file-text', label: '数据接入', title: '数据接入', leaves: [
-    { icon: 'file-text', label: '我的数据集', action: 'integration-1-item' },
-    { icon: 'file-text', label: '共享给我', action: 'integration-1-item' },
-    { icon: 'sliders', label: '管理', action: 'manage-integration-1' },
-    { icon: 'external-link', label: '探索更多', action: 'explore-integration-1' }
-  ] },
-  { key: 'integration-2', icon: 'user', label: '知识库', title: '知识库', leaves: [
-    { icon: 'user', label: '案例库', action: 'integration-2-item' },
-    { icon: 'user', label: '指标口径库', action: 'integration-2-item' },
-    { icon: 'sliders', label: '管理', action: 'manage-integration-2' },
-    { icon: 'external-link', label: '探索更多', action: 'explore-integration-2' }
-  ] }
-];
-
-const plusGroups = PLUS_GROUPS;
-const subTitle = computed(() => PLUS_GROUPS.find((g) => g.key === currentSub.value)?.title || '');
-const currentSubLabel = computed(() => PLUS_GROUPS.find((g) => g.key === currentSub.value)?.label || '');
-const subLeaves = computed(() => PLUS_GROUPS.find((g) => g.key === currentSub.value)?.leaves || []);
 const canSend = computed(() => text.value.trim().length > 0 || attachments.value.length > 0);
 
 const mentionGroups = computed(() => {
@@ -368,6 +260,12 @@ function onSendClick() {
 /* ---------------- 附件 ---------------- */
 let attachSeq = 0;
 
+/** 加号按钮已替换为上传附件按钮：点击直接唤起文件选择，本版本只保留附件上传 */
+function pickFiles() {
+  if (props.generating) return;
+  fileRef.value?.click();
+}
+
 function onFilesPicked() {
   const files = Array.from(fileRef.value?.files || []);
   files.forEach((f) => {
@@ -409,114 +307,6 @@ function insertAtCaret(payload) {
     autosize();
     scheduleDraft();
   });
-}
-
-/* ---------------- 加号菜单 ---------------- */
-const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-
-function measureMenu() {
-  nextTick(() => {
-    const plus = plusRef.value;
-    const menu = menuRef.value;
-    if (!plus || !menu) return;
-    const r = plus.getBoundingClientRect();
-    const mw = menu.offsetWidth;
-    const mh = menu.offsetHeight;
-    const left = clamp(r.left, 8, window.innerWidth - mw - 8);
-    let top = r.top - mh - 8;
-    if (top < 8) top = r.bottom + 8;
-    menuLeft.value = Math.round(left);
-    menuTop.value = Math.round(Math.min(top, window.innerHeight - mh - 8));
-  });
-}
-
-function togglePlus() {
-  if (plusOpen.value) closePlus(true);
-  else openPlus();
-}
-
-function openPlus() {
-  plusOpen.value = true;
-  currentSub.value = null;
-  measureMenu();
-  nextTick(() => {
-    menuRef.value?.querySelector('.ds-plus-menu__item')?.focus();
-  });
-}
-
-function closePlus(returnFocus) {
-  plusOpen.value = false;
-  currentSub.value = null;
-  clearTimeout(hoverTimer);
-  if (returnFocus) textareaRef.value?.focus();
-}
-
-function openSub(key, event) {
-  if (!plusOpen.value) return;
-  currentSub.value = key;
-  const itemRect = event?.currentTarget?.getBoundingClientRect();
-  nextTick(() => {
-    const menu = menuRef.value;
-    const sub = subRef.value;
-    if (!menu || !sub) return;
-    const mr = menu.getBoundingClientRect();
-    const sw = sub.offsetWidth;
-    const sh = sub.offsetHeight;
-    let left = mr.right + 4;
-    if (left + sw > window.innerWidth - 8) left = mr.left - sw - 4;
-    left = clamp(left, 8, window.innerWidth - sw - 8);
-    const top = itemRect ? clamp(itemRect.top, 8, window.innerHeight - sh - 8) : mr.top;
-    subLeft.value = Math.round(left);
-    subTop.value = Math.round(top);
-  });
-}
-
-function cancelSubClose() {
-  clearTimeout(hoverTimer);
-}
-
-function scheduleSubClose() {
-  clearTimeout(hoverTimer);
-  hoverTimer = setTimeout(() => {
-    currentSub.value = null;
-  }, 120);
-}
-
-function onMenuKeydown(event) {
-  const items = Array.from(menuRef.value?.querySelectorAll('.ds-plus-menu__item') || []);
-  const idx = items.indexOf(document.activeElement);
-  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-    event.preventDefault();
-    const next = idx < 0 ? 0 : (idx + (event.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
-    items[next]?.focus();
-  } else if (event.key === 'Enter' || event.key === ' ') {
-    event.preventDefault();
-    document.activeElement?.click?.();
-  } else if (event.key === 'Escape') {
-    event.preventDefault();
-    if (currentSub.value) closeSub();
-    else closePlus(true);
-  } else if (event.key === 'ArrowLeft' && currentSub.value) {
-    event.preventDefault();
-    closeSub();
-  }
-}
-
-function closeSub() {
-  currentSub.value = null;
-  nextTick(() => menuRef.value?.querySelector(`[data-plus-sub]`)?.focus());
-}
-
-function invokeLeaf(action) {
-  const call = action;
-  closePlus(true);
-  if (call === 'attachment') {
-    fileRef.value?.click();
-  } else if (call === 'add-context') {
-    insertAtCaret('@');
-    openMention('');
-  }
-  // 其余叶子：占位项，仅关闭并回焦
 }
 
 /* ---------------- 模型 ---------------- */
@@ -574,20 +364,12 @@ function syncMention() {
   mentionOpen.value = true;
   mentionFocus.value = mentionGroups.value[0]?.items[0]?.value || '';
   nextTick(() => {
-    const pa = plusRef.value?.getBoundingClientRect();
+    const pa = attachRef.value?.getBoundingClientRect();
     const mh = mentionRef.value?.offsetHeight || 240;
-    const left = clamp((pa?.left || 16) - 8, 8, window.innerWidth - 300);
+    const left = Math.max(8, Math.min((pa?.left || 16) - 8, window.innerWidth - 300));
     mentionLeft.value = Math.round(left);
     mentionTop.value = Math.round(Math.max(8, (pa?.top || 400) - mh - 8));
   });
-}
-
-function openMention(query = '') {
-  mentionQuery.value = query;
-  mentionOpen.value = true;
-  const first = mentionGroups.value[0]?.items[0];
-  mentionFocus.value = first ? first.value : '';
-  nextTick(syncMention);
 }
 
 function pickMention(label) {
@@ -631,18 +413,7 @@ function onMentionKeydown(event) {
 }
 
 /* ---------------- 生命周期 ---------------- */
-function onDocumentPointerDown(event) {
-  if (!plusOpen.value) return;
-  const inMenu = menuRef.value?.contains(event.target);
-  const inSub = subRef.value?.contains(event.target);
-  const inPlus = plusRef.value?.contains(event.target);
-  if (!inMenu && !inSub && !inPlus) closePlus(false);
-}
-
 function onWindowResize() {
-  if (plusOpen.value) {
-    closePlus(false);
-  }
   if (mentionOpen.value) mentionOpen.value = false;
   if (modelOpen.value) closePopover(false);
 }
@@ -663,15 +434,12 @@ onMounted(() => {
     modelName.value = MODEL_OPTIONS[0]?.name || '通用模型 · 标准';
   }
   restoreDraft();
-  document.addEventListener('pointerdown', onDocumentPointerDown, true);
   window.addEventListener('resize', onWindowResize, true);
 });
 
 onBeforeUnmount(() => {
   clearTimeout(draftTimer);
-  clearTimeout(hoverTimer);
   clearTimeout(voiceTimer);
-  document.removeEventListener('pointerdown', onDocumentPointerDown, true);
   window.removeEventListener('resize', onWindowResize, true);
 });
 
@@ -681,7 +449,6 @@ watch(
     restoreDraft();
     attachments.value = [];
     mentionOpen.value = false;
-    closePlus(false);
   }
 );
 
