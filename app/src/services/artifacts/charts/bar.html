@@ -1,0 +1,22 @@
+<header class="ds-webpage__head">
+  <h1 class="ds-webpage__title">波束角度质量对比</h1>
+  <p class="ds-webpage__sub">通信载荷测试日志 · 6 组波束角度 · 每角度取稳定段均值</p>
+</header>
+<div class="ds-chart">
+  <div class="ds-chart__head">
+    <span class="ds-chart__title">不同波束角度的吞吐与质量</span>
+    <span class="ds-chart__legend">
+      <i class="ds-chart__dot ds-chart__dot--a"></i>吞吐（Mbps）
+      <i class="ds-chart__dot ds-chart__dot--b"></i>质量分
+    </span>
+  </div>
+  <svg class="ds-chart__svg" viewBox="0 0 620 300" role="img" aria-label="波束角度吞吐与质量分对比柱状图">
+    <line x1="48" y1="250" x2="596" y2="250" stroke="var(--ds-border)" stroke-width="1" /><text x="38" y="254" text-anchor="end" class="ds-chart__tick">0</text><line x1="48" y1="200.9" x2="596" y2="200.9" stroke="var(--ds-border)" stroke-width="1" /><text x="38" y="204.9" text-anchor="end" class="ds-chart__tick">100</text><line x1="48" y1="151.7" x2="596" y2="151.7" stroke="var(--ds-border)" stroke-width="1" /><text x="38" y="155.7" text-anchor="end" class="ds-chart__tick">200</text><line x1="48" y1="102.6" x2="596" y2="102.6" stroke="var(--ds-border)" stroke-width="1" /><text x="38" y="106.6" text-anchor="end" class="ds-chart__tick">300</text><line x1="48" y1="53.5" x2="596" y2="53.5" stroke="var(--ds-border)" stroke-width="1" /><text x="38" y="57.5" text-anchor="end" class="ds-chart__tick">400</text>
+    <rect x="67.7" y="47.6" width="22" height="202.4" rx="3" fill="var(--ds-text-primary)" /><rect x="97.7" y="42.1" width="22" height="207.9" rx="3" fill="var(--ds-surface-strong)" stroke="var(--ds-border)" stroke-width="1" /><text x="78.7" y="39.6" text-anchor="middle" class="ds-chart__value">412</text><text x="108.7" y="34.1" text-anchor="middle" class="ds-chart__value">92</text><text x="93.7" y="274" text-anchor="middle" class="ds-chart__tick">15°</text><rect x="159" y="59.4" width="22" height="190.6" rx="3" fill="var(--ds-text-primary)" /><rect x="189" y="48.9" width="22" height="201.1" rx="3" fill="var(--ds-surface-strong)" stroke="var(--ds-border)" stroke-width="1" /><text x="170" y="51.4" text-anchor="middle" class="ds-chart__value">388</text><text x="200" y="40.9" text-anchor="middle" class="ds-chart__value">89</text><text x="185" y="274" text-anchor="middle" class="ds-chart__tick">25°</text><rect x="250.3" y="75.1" width="22" height="174.9" rx="3" fill="var(--ds-text-primary)" /><rect x="280.3" y="57.9" width="22" height="192.1" rx="3" fill="var(--ds-surface-strong)" stroke="var(--ds-border)" stroke-width="1" /><text x="261.3" y="67.1" text-anchor="middle" class="ds-chart__value">356</text><text x="291.3" y="49.9" text-anchor="middle" class="ds-chart__value">85</text><text x="276.3" y="274" text-anchor="middle" class="ds-chart__tick">35°</text><rect x="341.7" y="87.4" width="22" height="162.6" rx="3" fill="var(--ds-text-primary)" /><rect x="371.7" y="66.9" width="22" height="183.1" rx="3" fill="var(--ds-surface-strong)" stroke="var(--ds-border)" stroke-width="1" /><text x="352.7" y="79.4" text-anchor="middle" class="ds-chart__value">331</text><text x="382.7" y="58.9" text-anchor="middle" class="ds-chart__value">81</text><text x="367.7" y="274" text-anchor="middle" class="ds-chart__tick">45°</text><rect x="433" y="106.5" width="22" height="143.5" rx="3" fill="var(--ds-text-primary)" /><rect x="463" y="82.8" width="22" height="167.2" rx="3" fill="var(--ds-surface-strong)" stroke="var(--ds-border)" stroke-width="1" /><text x="444" y="98.5" text-anchor="middle" class="ds-chart__value">292</text><text x="474" y="74.8" text-anchor="middle" class="ds-chart__value">74</text><text x="459" y="274" text-anchor="middle" class="ds-chart__tick">55°</text><rect x="524.3" y="126.7" width="22" height="123.3" rx="3" fill="var(--ds-text-primary)" /><rect x="554.3" y="96.3" width="22" height="153.7" rx="3" fill="var(--ds-surface-strong)" stroke="var(--ds-border)" stroke-width="1" /><text x="535.3" y="118.7" text-anchor="middle" class="ds-chart__value">251</text><text x="565.3" y="88.3" text-anchor="middle" class="ds-chart__value">68</text><text x="550.3" y="274" text-anchor="middle" class="ds-chart__tick">65°</text>
+  </svg>
+  <p class="ds-chart__note">波束角度越大，吞吐与质量同步下降；65° 边缘波束吞吐仅为 15° 的 61%，质量分跌破 70。</p>
+</div>
+<div class="ds-webpage__section">
+  <h2 class="ds-webpage__h">结论</h2>
+  <p class="ds-webpage__lead">大角度波束的链路余量不足，建议在 55° 以上角度提高发射功率或缩短单次驻留时长。</p>
+</div>

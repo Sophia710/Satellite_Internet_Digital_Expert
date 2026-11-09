@@ -1,0 +1,29 @@
+<header class="ds-webpage__head">
+  <h1 class="ds-webpage__title">承载网时延趋势（72 小时）</h1>
+  <p class="ds-webpage__sub">P50 / P95 分位 · 按小时聚合 · DS-01 构造数据</p>
+</header>
+<div class="ds-chart">
+  <div class="ds-chart__head">
+    <span class="ds-chart__title">端到端时延分位走势</span>
+    <span class="ds-chart__legend">
+      <i class="ds-chart__dot ds-chart__dot--a"></i>P95
+      <i class="ds-chart__dot ds-chart__dot--b"></i>P50
+    </span>
+  </div>
+  <svg class="ds-chart__svg" viewBox="0 0 620 300" role="img" aria-label="24 小时端到端时延 P95 与 P50 折线图">
+    <line x1="48" y1="262" x2="596" y2="262" stroke="var(--ds-border)" stroke-width="1" /><text x="38" y="266" text-anchor="end" class="ds-chart__tick">200</text><line x1="48" y1="207.9" x2="596" y2="207.9" stroke="var(--ds-border)" stroke-width="1" /><text x="38" y="211.9" text-anchor="end" class="ds-chart__tick">250</text><line x1="48" y1="153.8" x2="596" y2="153.8" stroke="var(--ds-border)" stroke-width="1" /><text x="38" y="157.8" text-anchor="end" class="ds-chart__tick">300</text><line x1="48" y1="99.7" x2="596" y2="99.7" stroke="var(--ds-border)" stroke-width="1" /><text x="38" y="103.7" text-anchor="end" class="ds-chart__tick">350</text><line x1="48" y1="45.6" x2="596" y2="45.6" stroke="var(--ds-border)" stroke-width="1" /><text x="38" y="49.6" text-anchor="end" class="ds-chart__tick">400</text>
+    <line x1="48" y1="24" x2="48" y2="262" stroke="var(--ds-border)" stroke-width="1" />
+    <path d="M 48 256.6 L 71.8 258.8 L 95.7 253.3 L 119.5 251.2 L 143.3 254.4 L 167.1 257.7 L 191 255.5 L 214.8 252.3 L 238.6 250.1 L 262.4 253.3 L 286.3 256.6 L 310.1 258.8 L 333.9 254.4 L 357.7 255.5 L 381.6 253.3 L 405.4 251.2 L 429.2 254.4 L 453 252.3 L 476.9 255.5 L 500.7 256.6 L 524.5 253.3 L 548.3 254.4 L 572.2 255.5 L 596 252.3" fill="none" stroke="var(--ds-text-tertiary)" stroke-width="2" stroke-linecap="round" />
+    <path d="M 48 210.1 L 71.8 205.7 L 95.7 211.2 L 119.5 202.5 L 143.3 206.8 L 167.1 209 L 191 201.4 L 214.8 197.1 L 238.6 199.3 L 262.4 194.9 L 286.3 198.2 L 310.1 202.5 L 333.9 196 L 357.7 200.3 L 381.6 202.5 L 405.4 194.9 L 429.2 152.7 L 453 134.3 L 476.9 97.6 L 500.7 58.6 L 524.5 43.5 L 548.3 50 L 572.2 34.8 L 596 40.2" fill="none" stroke="var(--ds-text-primary)" stroke-width="2.5" stroke-linecap="round" />
+    <circle cx="596" cy="40.2" r="4" fill="var(--ds-text-primary)" />
+    <line x1="453" y1="24" x2="453" y2="262" stroke="var(--ds-text-quaternary)" stroke-width="1" stroke-dasharray="4 4" />
+    <text x="461" y="40" class="ds-chart__mark">21:40 阶跃</text>
+    <text x="596" y="28.2" text-anchor="end" class="ds-chart__value">410 ms</text>
+    <text x="48" y="284" text-anchor="middle" class="ds-chart__tick">00:00</text><text x="119.5" y="284" text-anchor="middle" class="ds-chart__tick">03:00</text><text x="191" y="284" text-anchor="middle" class="ds-chart__tick">06:00</text><text x="262.4" y="284" text-anchor="middle" class="ds-chart__tick">09:00</text><text x="333.9" y="284" text-anchor="middle" class="ds-chart__tick">12:00</text><text x="405.4" y="284" text-anchor="middle" class="ds-chart__tick">15:00</text><text x="476.9" y="284" text-anchor="middle" class="ds-chart__tick">18:00</text><text x="548.3" y="284" text-anchor="middle" class="ds-chart__tick">21:00</text>
+  </svg>
+  <p class="ds-chart__note">21:40 起 P95 由 ~255 ms 抬升至 410 ms，P50 基本持平：判为结构性劣化，不是轨道周期。</p>
+</div>
+<div class="ds-webpage__section">
+  <h2 class="ds-webpage__h">读数</h2>
+  <p class="ds-webpage__lead">30 条链路里只有 7 号链路在两个时段越限，其余链路仍落在轨道周期波动区间内。</p>
+</div>

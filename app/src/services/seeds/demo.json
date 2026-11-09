@@ -1,0 +1,16 @@
+{
+  "defaultQuestion": "上传了这两天的承载网时延日志，先看整体态势，再定位 7 号链路从昨晚开始变差的原因。",
+  "thinking": {
+    "running": "正在解析日志与确认口径…",
+    "doneLabel": "已深度思考 38 秒",
+    "body": "先确认时延口径与时间窗，再按轨道与链路聚合分位。态势里 7 号链路 P95 明显抬升，转做 STL 分解与突变点定位，最后与切换事件对齐，判断是结构性劣化还是周期性波动。",
+    "stopLabel": "思考已停止",
+    "stopBody": "已停止生成，已完成的步骤与图表保留在产物区。"
+  },
+  "steps": [
+    { "action": "解析日志字段", "runningTool": "", "runningDur": "", "runningDetail": "", "doneTool": "", "doneDur": "4 秒" },
+    { "action": "确认口径与时间窗", "runningTool": "", "runningDur": "", "runningDetail": "", "doneTool": "schema-confirm", "doneDur": "6 秒" },
+    { "action": "计算分位与突变点", "runningTool": "pandas-analyzer", "runningDur": "21 秒", "runningDetail": "正在计算 P50 / P95 / P99 与 PELT 突变点", "doneTool": "pandas-analyzer", "doneDur": "21 秒" },
+    { "action": "生成图表与结论", "runningTool": "", "runningDur": "", "runningDetail": "", "doneTool": "", "doneDur": "5 秒" }
+  ]
+}

@@ -1,0 +1,27 @@
+<header class="ds-webpage__head">
+  <h1 class="ds-webpage__title">链路健康度评估</h1>
+  <p class="ds-webpage__sub">六维归一化 · 7 号链路 vs 12 号链路 · 60 秒滑动窗口</p>
+</header>
+<div class="ds-chart">
+  <div class="ds-chart__head">
+    <span class="ds-chart__title">链路健康度六维对比</span>
+    <span class="ds-chart__legend">
+      <i class="ds-chart__dot ds-chart__dot--a"></i>7 号链路
+      <i class="ds-chart__dot ds-chart__dot--b"></i>12 号链路
+    </span>
+  </div>
+  <div class="ds-chart__radar">
+    <svg class="ds-chart__svg ds-chart__svg--radar" viewBox="0 0 470 340" role="img" aria-label="7 号与 12 号链路健康度雷达图">
+      <polygon points="238,140 262.2,154 262.2,182 238,196 213.8,182 213.8,154" fill="none" stroke="var(--ds-border)" stroke-width="1" /><polygon points="238,112 286.5,140 286.5,196 238,224 189.5,196 189.5,140" fill="none" stroke="var(--ds-border)" stroke-width="1" /><polygon points="238,84 310.7,126 310.7,210 238,252 165.3,210 165.3,126" fill="none" stroke="var(--ds-border)" stroke-width="1" /><polygon points="238,56 335,112 335,224 238,280 141,224 141,112" fill="none" stroke="var(--ds-border)" stroke-width="1" />
+      <line x1="238" y1="168" x2="238" y2="56" stroke="var(--ds-divider)" stroke-width="1" /><line x1="238" y1="168" x2="335" y2="112" stroke="var(--ds-divider)" stroke-width="1" /><line x1="238" y1="168" x2="335" y2="224" stroke="var(--ds-divider)" stroke-width="1" /><line x1="238" y1="168" x2="238" y2="280" stroke="var(--ds-divider)" stroke-width="1" /><line x1="238" y1="168" x2="141" y2="224" stroke="var(--ds-divider)" stroke-width="1" /><line x1="238" y1="168" x2="141" y2="112" stroke="var(--ds-divider)" stroke-width="1" />
+      <polygon points="238,72.8 315.6,123.2 327.2,219.5 238,276.6 147.8,220.1 152.6,118.7" fill="var(--ds-surface-strong)" fill-opacity="0.55" stroke="var(--ds-text-tertiary)" stroke-width="1.5" />
+      <polygon points="238,128.8 298.1,133.3 284.6,194.9 238,274.4 150.7,218.4 184.7,137.2" fill="var(--ds-hover-fill)" stroke="var(--ds-text-primary)" stroke-width="2" />
+      <text x="238" y="30" text-anchor="middle" class="ds-chart__tick">时延</text><text x="361" y="101" text-anchor="start" class="ds-chart__tick">抖动</text><text x="361" y="243" text-anchor="start" class="ds-chart__tick">丢包</text><text x="238" y="314" text-anchor="middle" class="ds-chart__tick">可用率</text><text x="115" y="243" text-anchor="end" class="ds-chart__tick">切换成功</text><text x="115" y="101" text-anchor="end" class="ds-chart__tick">链路余量</text>
+    </svg>
+  </div>
+  <p class="ds-chart__note">越靠外越好 · 归一化到 60 秒窗口。7 号链路在时延、丢包、余量三个维度明显内缩；12 号链路六维齐整，可作为对照基线。</p>
+</div>
+<div class="ds-webpage__section">
+  <h2 class="ds-webpage__h">判读</h2>
+  <p class="ds-webpage__lead">7 号链路在时延与丢包两轴同时内缩，说明是链路级问题而非单点抖动。</p>
+</div>

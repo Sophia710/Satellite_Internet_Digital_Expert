@@ -1,0 +1,131 @@
+{
+  "ok": true,
+  "failed": [],
+  "checks": [
+    {
+      "check": "欢迎标题",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "快捷任务卡=3",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "check": "卡片预填完整提示词",
+      "ok": true,
+      "detail": "请分析承载网时延日志数据，研判多轨卫星时延态势并生成趋势分析。"
+    },
+    {
+      "check": "预填不自动发送",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "发送后进入会话态",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "思考块完成态",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "四个步骤完成",
+      "ok": true,
+      "detail": "4/4"
+    },
+    {
+      "check": "正文/代码/引用/产物卡全揭示",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "md 打开的是预览视图",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "md 编辑态出现源码编辑器",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "编辑后出现已保存提示",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "预览与编辑同源",
+      "ok": true,
+      "detail": " 分解显示趋势项自昨夜起单调抬升，与一次切换事件的时间点吻合；残差中没有新的周期异常，因此判为结构性劣化而非轨道周期。\n\n新增一行：7 号链路优先核查路由配置。"
+    },
+    {
+      "check": "xlsx 无编辑预览按钮",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "xlsx 表格视图",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "docx 无编辑预览按钮",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "docx 页面视图",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "html 预览有选择元素",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "html 有编辑预览按钮",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "html 编辑态隐藏选择元素",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "深链还原会话内容",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "深链还原产物页签",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "主题切换生效",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "右栏键盘调宽 320 / 视口上限",
+      "ok": true,
+      "detail": "320 / 820 (expect 820)"
+    },
+    {
+      "check": "左栏可折叠",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "check": "console 无错误",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

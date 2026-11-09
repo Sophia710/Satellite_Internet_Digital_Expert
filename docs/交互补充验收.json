@@ -1,0 +1,141 @@
+{
+  "ok": true,
+  "failed": [],
+  "checks": [
+    {
+      "check": "项目更多菜单弹出",
+      "ok": true,
+      "detail": "['重命名', '取消置顶', '删除项目']"
+    },
+    {
+      "check": "项目菜单不再重复新建会话",
+      "ok": true,
+      "detail": "['重命名', '取消置顶', '删除项目']"
+    },
+    {
+      "check": "会话行菜单弹出",
+      "ok": true,
+      "detail": "['重命名', '移出项目', '移动到项目…', '取消置顶', '删除']"
+    },
+    {
+      "check": "删除确认框弹出",
+      "ok": true,
+      "detail": "删除该会话？"
+    },
+    {
+      "check": "加号菜单弹出",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "加号二级面板弹出",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "模型浮层弹出",
+      "ok": true,
+      "detail": "['通用模型 · 标准\\n均衡速度与分析质量', '通用模型 · 快速\\n适合数据探查与字段确认', '通用模型 · 深度推理\\n适合多指标归因与时序推理']"
+    },
+    {
+      "check": "@提及浮层弹出",
+      "ok": true,
+      "detail": "['时延日志_20261107.csv', '波束扫描_测试记录.xlsx', '时延指标口径库', '故障案例库', '时延分析专家', '故障复盘专家']"
+    },
+    {
+      "check": "语音输入三态切换",
+      "ok": true,
+      "detail": "recording -> idle"
+    },
+    {
+      "check": "文件树在预览右侧",
+      "ok": true,
+      "detail": "{'tree': {'left': 1200, 'top': 133, 'width': 240, 'height': 767}, 'preview': {'left': 721, 'top': 133, 'width': 479, 'height': 767}, 'content': {'left': 721, 'top': 133, 'width': 719, 'height': 767}, 'panel': {'left': 721, 'top': 48, 'width': 719, 'height': 852}}"
+    },
+    {
+      "check": "文件树贴产物区右缘",
+      "ok": true,
+      "detail": "{'tree': {'left': 1200, 'top': 133, 'width': 240, 'height': 767}, 'preview': {'left': 721, 'top': 133, 'width': 479, 'height': 767}, 'content': {'left': 721, 'top': 133, 'width': 719, 'height': 767}, 'panel': {'left': 721, 'top': 48, 'width': 719, 'height': 852}}"
+    },
+    {
+      "check": "文件树与预览同高（并排而非底部）",
+      "ok": true,
+      "detail": "{'tree': {'left': 1200, 'top': 133, 'width': 240, 'height': 767}, 'preview': {'left': 721, 'top': 133, 'width': 479, 'height': 767}, 'content': {'left': 721, 'top': 133, 'width': 719, 'height': 767}, 'panel': {'left': 721, 'top': 48, 'width': 719, 'height': 852}}"
+    },
+    {
+      "check": "文件树宽度 240",
+      "ok": true,
+      "detail": "240"
+    },
+    {
+      "check": "当前文件在树中高亮",
+      "ok": true,
+      "detail": "['异常链路清单.xlsx']"
+    },
+    {
+      "check": "新标签页启动页可见",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "End 拉到视口允许的最大（不是固定 720）",
+      "ok": true,
+      "detail": "{'end': 820, 'limits': {'inner': 1440, 'leftW': 260, 'rightW': 720, 'centerMin': 360, 'expectMax': 820}}"
+    },
+    {
+      "check": "Home 收到最小值 320",
+      "ok": true,
+      "detail": "320"
+    },
+    {
+      "check": "← 一步 +16",
+      "ok": true,
+      "detail": "336"
+    },
+    {
+      "check": "拖拽宽度 = 视口宽 - 指针 X",
+      "ok": true,
+      "detail": "600"
+    },
+    {
+      "check": "视口缩小后右栏自动收回",
+      "ok": true,
+      "detail": "{'w': 480, 'expect': 480}"
+    },
+    {
+      "check": "折线图产物按网页格式渲染",
+      "ok": true,
+      "detail": "{'svg': 1, 'format': 'web', 'altText': True, 'toggle': True, 'picker': True}"
+    },
+    {
+      "check": "网页产物有选择元素与编辑切换",
+      "ok": true,
+      "detail": "{'svg': 1, 'format': 'web', 'altText': True, 'toggle': True, 'picker': True}"
+    },
+    {
+      "check": "图表 HTML 编辑视图带源码",
+      "ok": true,
+      "detail": "<header class=\"ds-webpage__head\">\n  <h1 "
+    },
+    {
+      "check": "图表 HTML 编辑后实时保存",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "PNG 产物按图片格式渲染",
+      "ok": true,
+      "detail": "{'format': 'image', 'loaded': True, 'toggle': False, 'picker': False}"
+    },
+    {
+      "check": "图片产物不提供编辑/预览与选择元素",
+      "ok": true,
+      "detail": "{'format': 'image', 'loaded': True, 'toggle': False, 'picker': False}"
+    },
+    {
+      "check": "console 无错误",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

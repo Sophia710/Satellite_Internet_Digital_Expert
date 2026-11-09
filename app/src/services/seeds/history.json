@@ -1,0 +1,31 @@
+{
+            "groupsExpanded": { "projects": true, "recent": true },
+            "selectedId": null,
+            "projects": [
+              {
+                "id": "p1",
+                "title": "时延专项",
+                "pinned": true,
+                "expanded": true,
+                "conversations": [
+                  { "id": "c11", "title": "7 号链路时延劣化排查", "pinned": true },
+                  { "id": "c12", "title": "跨轨道时延态势对比", "pinned": false }
+                ]
+              },
+              {
+                "id": "p2",
+                "title": "波束复盘",
+                "pinned": false,
+                "expanded": true,
+                "conversations": [
+                  { "id": "c21", "title": "8 波束扫描质量分析", "pinned": false },
+                  { "id": "c22", "title": "重叠区干扰定位", "pinned": false }
+                ]
+              }
+            ],
+            "recent": [
+              { "id": "r1", "title": "故障时序异常定位", "pinned": false },
+              { "id": "r2", "title": "陌生日志字段映射", "pinned": true },
+              { "id": "r3", "title": "复盘报告导出", "pinned": false }
+            ]
+          }
