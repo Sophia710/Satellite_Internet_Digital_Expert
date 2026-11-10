@@ -220,7 +220,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onBeforeUnmount, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import Icon from '../../shared/ui/Icon.vue';
 import { useSessionStore } from '../session/store';
 import { confirmDialog } from '../../shared/ui/dialog';
@@ -289,6 +289,7 @@ function cancelPendingOpen() {
 
 /* ---------------- 新建 ---------------- */
 function createProject() {
+  session.groupsExpanded.projects = true;
   const id = session.createProject();
   startRename('project', id, '新项目');
 }
@@ -321,7 +322,7 @@ function openConversationMenu(event, conv, projectId) {
   const anchor = event.currentTarget;
   const items = [{ icon: 'pencil', label: '重命名', action: 'rename' }];
   if (projectId) items.push({ icon: 'folder-input', label: '移出项目', action: 'move-out' });
-  items.push({ icon: 'folder-input', label: '移动到项目…', action: 'move-to', disabled: true });
+  items.push({ icon: 'folder-input', label: '移动到项目', action: 'move-to', children: moveTargets(projectId) });
   items.push({ icon: 'pin', label: conv.pinned ? '取消置顶' : '置顶', action: 'pin' });
   items.push({ divider: true });
   items.push({ icon: 'trash', label: '删除', action: 'delete', danger: true });
@@ -333,10 +334,34 @@ function openConversationMenu(event, conv, projectId) {
     onSelect: (action) => {
       if (action === 'rename') startRename('conversation', conv.id, conv.title);
       else if (action === 'move-out') session.moveOutOfProject(conv.id);
-      else if (action === 'pin') session.pinConversation(conv.id);
+      else if (action === 'move-to:new') moveConversationToNewProject(conv.id);
+      else if (typeof action === 'string' && action.startsWith('move-to:')) {
+        session.moveToProject(conv.id, action.slice('move-to:'.length));
+      } else if (action === 'pin') session.pinConversation(conv.id);
       else if (action === 'delete') confirmDeleteConversation(conv, anchor);
     }
   });
+}
+
+/** 「移动到项目」的二级菜单：现有项目（当前所在项目打勾）+ 创建新项目 */
+function moveTargets(currentProjectId) {
+  const children = session.sortedProjects.map((p) => ({
+    icon: 'folder',
+    label: p.title,
+    action: `move-to:${p.id}`,
+    checked: p.id === currentProjectId
+  }));
+  if (children.length) children.push({ divider: true });
+  children.push({ icon: 'folder-plus', label: '创建新项目', action: 'move-to:new', shortcut: 'Ctrl + O' });
+  return children;
+}
+
+/** 新建项目并把当前会话搬进去，随后直接进入项目重命名态 */
+function moveConversationToNewProject(conversationId) {
+  const projectId = session.createProject();
+  session.groupsExpanded.projects = true;
+  session.moveToProject(conversationId, projectId);
+  startRename('project', projectId, '新项目');
 }
 
 async function confirmDeleteConversation(conv, anchor) {
@@ -369,7 +394,25 @@ async function confirmDeleteProject(project, anchor) {
   emit('deleted', ids[0] || '');
 }
 
-onBeforeUnmount(() => clearTimeout(openTimer));
+/* Ctrl/Cmd + O：与菜单里的「创建新项目」同一动作（输入态下不劫持） */
+function isTypingTarget(el) {
+  return !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
+}
+
+function onGlobalKeydown(event) {
+  if (!(event.ctrlKey || event.metaKey) || event.altKey || event.shiftKey) return;
+  if (event.key.toLowerCase() !== 'o') return;
+  if (isTypingTarget(event.target)) return;
+  event.preventDefault();
+  createProject();
+}
+
+onMounted(() => window.addEventListener('keydown', onGlobalKeydown));
+
+onBeforeUnmount(() => {
+  clearTimeout(openTimer);
+  window.removeEventListener('keydown', onGlobalKeydown);
+});
 
 defineExpose({ cancelPendingOpen });
 </script>

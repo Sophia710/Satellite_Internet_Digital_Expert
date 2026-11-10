@@ -133,11 +133,12 @@ def main() -> int:
         check("深链还原会话内容", page.locator(".ds-md").count() == 1)
         check("深链还原产物页签", page.locator('.ds-atab[data-tab-id="art-md"]').count() == 1)
 
-        # 9. 深色主题
-        page.locator(".ds-btn--ghost").first.click()
-        page.wait_for_timeout(500)
-        page.screenshot(path=str(SHOTS / "12-深色主题.png"))
-        check("主题切换生效", page.evaluate("() => document.documentElement.dataset.theme") == "dark")
+        # 9. 顶部主题切换按钮已移除
+        page.screenshot(path=str(SHOTS / "12-主题按钮已移除.png"))
+        check(
+            "顶部深色主题按钮已移除",
+            page.get_by_text("深色", exact=True).count() == 0 and page.get_by_text("浅色", exact=True).count() == 0,
+        )
 
         # 10. 右栏宽度键盘调节（Home=最小 320，End=视口允许的最大：视口宽 - 左栏 - 中栏最小 360）
         page.locator(".ds-shell__resize").focus()

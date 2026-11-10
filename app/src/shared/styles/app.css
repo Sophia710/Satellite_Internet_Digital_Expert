@@ -2589,6 +2589,24 @@ button.ds-launch-row:hover {
   visibility: hidden;
 }
 
+/* 二级浮层：贴着父项右缘展开（位置由 JS 算），行高/字号与一级一致 */
+.ds-popover--sub {
+  min-width: 208px;
+  max-width: 320px;
+}
+
+/* 父项右侧箭头：始终可见，且不参与 check 的选中态显隐 */
+.ds-popover__check--chevron {
+  visibility: visible;
+  color: var(--ds-text-quaternary);
+}
+
+.ds-popover__item--submenu:hover .ds-popover__check--chevron,
+.ds-popover__item--submenu.is-focused .ds-popover__check--chevron,
+.ds-popover__item--submenu.is-submenu-open .ds-popover__check--chevron {
+  color: var(--ds-text-secondary);
+}
+
 /* 危险项：图标与文字同为 danger，hover 用 danger 的浅色混合底 */
 .ds-popover__item--danger,
 .ds-popover__item--danger .ds-popover__icon {

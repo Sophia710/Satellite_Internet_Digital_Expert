@@ -37,20 +37,6 @@
           <Icon name="paperclip" :size="18" />
         </button>
 
-        <button
-          ref="voiceRef"
-          type="button"
-          class="ds-icon-btn ds-voice ds-composer__voice"
-          :data-state="voiceState"
-          :aria-label="voiceState === 'recording' ? '结束语音输入' : '语音输入'"
-          :aria-pressed="voiceState === 'recording' ? 'true' : 'false'"
-          :disabled="generating"
-          @click="toggleVoice"
-        >
-          <span v-if="voiceState === 'recording'" class="ds-voice__dot" aria-hidden="true"></span>
-          <Icon v-else name="mic" :size="18" />
-        </button>
-
         <span class="ds-composer__spacer" aria-hidden="true"></span>
 
         <button
@@ -135,7 +121,6 @@ const MAX_LINES = 10;
 
 const textareaRef = ref(null);
 const attachRef = ref(null);
-const voiceRef = ref(null);
 const modelRef = ref(null);
 const fileRef = ref(null);
 const mentionRef = ref(null);
@@ -145,7 +130,6 @@ const attachments = ref([]);
 const composing = ref(false);
 const modelOpen = ref(false);
 const modelName = ref('');
-const voiceState = ref('idle');
 
 const mentionOpen = ref(false);
 const mentionQuery = ref('');
@@ -278,37 +262,6 @@ function removeAttachment(uid) {
   attachments.value = attachments.value.filter((a) => a.uid !== uid);
 }
 
-/* ---------------- 语音 ---------------- */
-let voiceTimer = null;
-
-function toggleVoice() {
-  if (voiceState.value === 'recording') {
-    clearTimeout(voiceTimer);
-    voiceState.value = 'idle';
-    return;
-  }
-  voiceState.value = 'recording';
-  voiceTimer = setTimeout(() => {
-    voiceState.value = 'idle';
-    insertAtCaret('分析 7 号链路昨晚的时延突变，给出结论和建议动作。');
-  }, 1600);
-}
-
-function insertAtCaret(payload) {
-  const ta = textareaRef.value;
-  if (!ta) return;
-  const pos = ta.selectionStart ?? text.value.length;
-  const before = text.value.charAt(pos - 1);
-  const prefix = pos > 0 && before !== ' ' && before !== '\n' ? ' ' : '';
-  text.value = `${text.value.slice(0, pos)}${prefix}${payload}${text.value.slice(pos)}`;
-  nextTick(() => {
-    ta.focus();
-    ta.selectionStart = ta.selectionEnd = pos + prefix.length + payload.length;
-    autosize();
-    scheduleDraft();
-  });
-}
-
 /* ---------------- 模型 ---------------- */
 function openModelMenu() {
   if (props.generating) return;
@@ -439,7 +392,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearTimeout(draftTimer);
-  clearTimeout(voiceTimer);
   window.removeEventListener('resize', onWindowResize, true);
 });
 

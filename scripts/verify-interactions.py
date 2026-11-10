@@ -82,15 +82,10 @@ with sync_playwright() as p:
     check("@提及浮层弹出", pg.locator(".ds-mention").count() == 1, pg.locator(".ds-mention__label").all_inner_texts() if pg.locator(".ds-mention").count() else "")
     pg.screenshot(path=SHOTS + r"\26-提及浮层.png")
 
-    # 语音三态
+    # 语音输入按钮已移除（本版只保留附件上传）
     pg.keyboard.press("Escape")
     pg.locator(".ds-composer__textarea").fill("")
-    pg.locator(".ds-composer__voice").click()
-    pg.wait_for_timeout(200)
-    state1 = pg.locator(".ds-composer__voice").get_attribute("data-state")
-    pg.wait_for_timeout(1700)
-    state2 = pg.locator(".ds-composer__voice").get_attribute("data-state")
-    check("语音输入三态切换", state1 == "recording" and state2 != "recording", f"{state1} -> {state2}")
+    check("语音输入按钮已移除", pg.locator(".ds-composer__voice").count() == 0, pg.locator(".ds-composer__voice").count())
     pg.wait_for_timeout(900)
 
     # 文件树位置：贴在产物区右侧、与预览并排（不允许铺在底部）

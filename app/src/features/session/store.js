@@ -120,6 +120,27 @@ export const useSessionStore = defineStore('session', {
       this.recent.unshift({ ...conv, pinned: false });
     },
 
+    /** 把会话移动到指定项目（跨项目直接搬，已在该项目内则原样返回） */
+    moveToProject(id, projectId) {
+      const target = this.projects.find((p) => p.id === projectId);
+      const found = this.findConversation(id);
+      if (!target || !found) return false;
+      if (found.project && found.project.id === projectId) {
+        target.expanded = true;
+        return true;
+      }
+      if (found.project) {
+        const ci = found.project.conversations.findIndex((c) => c.id === id);
+        if (ci >= 0) found.project.conversations.splice(ci, 1);
+      } else {
+        const ri = this.recent.findIndex((c) => c.id === id);
+        if (ri >= 0) this.recent.splice(ri, 1);
+      }
+      target.conversations.unshift({ ...found.conv, pinned: false });
+      target.expanded = true;
+      return true;
+    },
+
     removeConversation(id) {
       this.projects.forEach((p) => {
         const i = p.conversations.findIndex((c) => c.id === id);

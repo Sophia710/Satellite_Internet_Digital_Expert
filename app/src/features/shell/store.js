@@ -2,7 +2,8 @@ import { defineStore } from 'pinia';
 
 const KEYS = {
   left: 'ds.chat-workbench.sidebar.collapsed',
-  rightOpen: 'ds.chat-workbench.rightPanel.open',
+  /* v2：右栏默认关闭；换 key 让旧版「默认打开」的本地记忆失效 */
+  rightOpen: 'ds.chat-workbench.rightPanel.open.v2',
   rightWidth: 'ds.chat-workbench.rightPanel.width'
 };
 
@@ -70,7 +71,8 @@ function write(key, value) {
 export const useShellStore = defineStore('shell', {
   state: () => ({
     leftCollapsed: readFlag(KEYS.left) ?? false,
-    rightOpen: readFlag(KEYS.rightOpen) ?? true,
+    /* 首次进入系统右栏关闭；之后按用户最后一次显式开关恢复 */
+    rightOpen: readFlag(KEYS.rightOpen) ?? false,
     rightWidth: clampWidth(readNumber(KEYS.rightWidth) ?? DEFAULT_WIDTH),
     maxRightWidth: viewportMax(),
     theme: 'light',

@@ -18,9 +18,6 @@
             <span class="ds-convhead__title">{{ chat.title }}</span>
           </div>
           <span class="pw-head__spacer" aria-hidden="true"></span>
-          <button type="button" class="ds-btn ds-btn--ghost ds-btn--sm" @click="shell.toggleTheme()">
-            <span class="ds-btn__label">{{ shell.theme === 'dark' ? '浅色' : '深色' }}</span>
-          </button>
         </div>
       </div>
 
