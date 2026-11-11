@@ -6,18 +6,7 @@
     :data-kind="tab ? tab.kind : 'file'"
     :data-mode="tab ? tab.mode : 'preview'"
   >
-    <input
-      v-if="renaming"
-      ref="renameRef"
-      v-model="renameValue"
-      type="text"
-      class="ds-rename__input ds-atbar__rename"
-      aria-label="重命名产物"
-      @keydown.enter.prevent="commitRename"
-      @keydown.esc.prevent.stop="cancelRename"
-      @blur="commitRename"
-    />
-    <span v-else class="ds-atbar__name" :hidden="!tab">{{ tab ? tab.name : '' }}</span>
+    <span class="ds-atbar__name" :hidden="!tab">{{ tab ? tab.name : '' }}</span>
     <span class="ds-atbar__saved" :hidden="!artifact.saved">已保存</span>
     <span class="ds-atbar__spacer" aria-hidden="true"></span>
 
@@ -46,25 +35,15 @@
     </button>
 
     <button
+      v-if="tab"
       type="button"
-      class="ds-icon-btn"
-      disabled
-      aria-disabled="true"
-      aria-label="外部打开（原型无真实地址，不可用）"
+      class="ds-amode ds-atbar__download"
+      data-action="download"
+      aria-label="下载当前产物"
+      @click="downloadActive"
     >
-      <Icon name="external-link" :size="16" />
-    </button>
-
-    <button
-      type="button"
-      class="ds-icon-btn"
-      data-action="more"
-      aria-haspopup="menu"
-      aria-label="更多操作"
-      :disabled="!tab"
-      @click="openMoreMenu"
-    >
-      <Icon name="more-horizontal" :size="18" />
+      <Icon name="download" :size="16" icon-class="ds-amode__icon" />
+      <span class="ds-amode__label">下载</span>
     </button>
 
     <button
@@ -81,11 +60,12 @@
 </template>
 
 <script setup>
-import { nextTick, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import Icon from '../../shared/ui/Icon.vue';
 import { useArtifactStore } from './store';
 import { useShellStore } from '../shell/store';
-import { openPopover } from '../../shared/ui/popover';
+import { MD_SOURCE, artifactSeed, htmlSourceFor, imageSourceFor } from '../../services/artifacts';
+import { splitPipes } from '../../shared/lib/markdown';
 
 const artifact = useArtifactStore();
 const shell = useShellStore();
@@ -94,9 +74,6 @@ const props = defineProps({
 });
 
 const picking = ref(false);
-const renaming = ref(false);
-const renameValue = ref('');
-const renameRef = ref(null);
 
 /* 「已保存」提示 1.6 秒后隐去 */
 let savedTimer = null;
@@ -116,32 +93,8 @@ watch(
   () => artifact.activeId,
   () => {
     picking.value = false;
-    renaming.value = false;
   }
 );
-
-function startRename() {
-  if (!props.tab) return;
-  renameValue.value = props.tab.name;
-  renaming.value = true;
-  nextTick(() => {
-    renameRef.value?.focus();
-    renameRef.value?.select();
-  });
-}
-
-function commitRename() {
-  if (!renaming.value) return;
-  const value = renameValue.value.trim();
-  renaming.value = false;
-  if (!value || !props.tab) return;
-  const tab = artifact.tabs.find((t) => t.id === artifact.activeId);
-  if (tab) tab.name = value;
-}
-
-function cancelRename() {
-  renaming.value = false;
-}
 
 /* 展开文件树会占掉 240px；预览区不足 420px 时把右栏撑到每个视口能放下的合理宽度，
    保证「内容在左、文件树在右」同时成立，而不是把表格挤成横向滚动条 */
@@ -153,18 +106,64 @@ function toggleTree() {
   }
 }
 
-function openMoreMenu(event) {
-  openPopover({
-    anchor: event.currentTarget,
-    align: 'end',
-    items: [
-      { icon: 'copy', label: '下载', action: 'download' },
-      { divider: true },
-      { icon: 'pencil', label: '重命名', action: 'rename' }
-    ],
-    onSelect: (action) => {
-      if (action === 'rename') startRename();
-    }
-  });
+function baseName(name) {
+  return String(name || '产物').replace(/\.[a-z0-9]+$/i, '');
+}
+
+function dataUrlToBlob(url) {
+  const comma = String(url || '').indexOf(',');
+  if (comma < 0) return null;
+  const head = url.slice(0, comma);
+  const mime = /data:([^;]+)/.exec(head)?.[1] || 'application/octet-stream';
+  try {
+    const binary = atob(url.slice(comma + 1));
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  } catch {
+    return null;
+  }
+}
+
+function saveBlob(blob, name) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = name;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+/* 原型里没有真实二进制文件：按当前产物格式导出可读副本 */
+function downloadActive() {
+  const tab = props.tab;
+  if (!tab) return;
+  let blob = null;
+  let name = tab.name;
+
+  if (tab.format === 'md') {
+    blob = new Blob([MD_SOURCE], { type: 'text/markdown;charset=utf-8' });
+  } else if (tab.format === 'web') {
+    blob = new Blob([htmlSourceFor(tab.id)], { type: 'text/html;charset=utf-8' });
+  } else if (tab.format === 'image') {
+    blob = dataUrlToBlob(imageSourceFor(tab.id));
+  } else if (tab.format === 'sheet') {
+    const rows = [splitPipes(artifactSeed.sheet.heads), ...artifactSeed.sheet.rows.map(splitPipes)];
+    const csv = rows
+      .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\r\n');
+    name = `${baseName(tab.name)}.csv`;
+    blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  } else if (tab.format === 'doc') {
+    name = `${baseName(tab.name)}.txt`;
+    blob = new Blob([`${baseName(tab.name)}\n\n${artifactSeed.docx.paras.join('\n\n')}\n`], {
+      type: 'text/plain;charset=utf-8'
+    });
+  }
+
+  if (blob) saveBlob(blob, name);
 }
 </script>

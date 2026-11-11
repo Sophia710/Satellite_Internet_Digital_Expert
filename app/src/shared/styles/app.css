@@ -246,23 +246,73 @@ progress {
 .ds-artcard {
   display: flex;
   align-items: center;
-  gap: var(--ds-space-2);
-  width: 260px;
+  gap: var(--ds-space-1);
+  width: 100%;
   max-width: 100%;
-  padding: var(--ds-space-2) var(--ds-space-3);
+  padding: 0;
+  box-sizing: border-box;
   border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-button);
+  border-radius: 14px;
   background: var(--ds-surface-raised);
-  box-shadow: var(--ds-shadow-raised);
+  box-shadow: none;
   font-family: inherit;
   text-align: left;
-  cursor: pointer;
   transition: background-color var(--ds-t-fast) var(--ds-ease-standard),
     border-color var(--ds-t-fast) var(--ds-ease-standard);
 }
 
+.ds-artcard__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  padding: 12px 14px;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ds-artcard__main:focus-visible {
+  outline: 2px solid var(--ds-color-accent);
+  outline-offset: -2px;
+}
+
+.ds-artcard__peek {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 14px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ds-text-secondary);
+  cursor: pointer;
+  transition: color var(--ds-t-fast) var(--ds-ease-standard),
+    background-color var(--ds-t-fast) var(--ds-ease-standard);
+}
+
+.ds-artcard__peek:hover {
+  background: transparent;
+  color: var(--ds-text-primary);
+}
+
+.ds-artcard__peek:focus-visible {
+  outline: 2px solid var(--ds-color-accent);
+  outline-offset: 1px;
+}
+
 .ds-artcard:hover {
   background: var(--ds-surface-muted);
+  border-color: var(--ds-border-strong);
 }
 
 .ds-artcard__icon {
@@ -1641,6 +1691,200 @@ button.ds-launch-row:hover {
   font-size: 16px;
 }
 
+/* 遥测时序可视化：筛选工具条 + 多参数静态 SVG + 范围值排名 */
+.ds-telemetry {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--ds-border);
+  border-radius: 14px;
+  background: var(--ds-surface);
+}
+.ds-telemetry__bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ds-divider);
+}
+.ds-telemetry__label {
+  margin-right: 0;
+  font-size: 11px;
+  color: var(--ds-text-tertiary);
+}
+.ds-telemetry__select,
+.ds-telemetry__rank-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  border: 1px solid var(--ds-border);
+  border-radius: 6px;
+  background: var(--ds-surface-raised);
+  font-size: 11px;
+  color: var(--ds-text-primary);
+}
+.ds-telemetry__select svg,
+.ds-telemetry__rank-select svg {
+  width: 11px;
+  height: 11px;
+  fill: none;
+  stroke: var(--ds-text-tertiary);
+  stroke-width: 1.8;
+}
+.ds-telemetry__chip {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 7px;
+  border: 1px solid #BFDBFE;
+  border-radius: 4px;
+  background: #EFF6FF;
+  font-size: 11px;
+  color: var(--ds-color-accent);
+}
+.ds-telemetry__chip--muted {
+  border-color: var(--ds-border);
+  background: var(--ds-surface-muted);
+  color: var(--ds-text-tertiary);
+}
+.ds-telemetry__chip--add {
+  width: 24px;
+  justify-content: center;
+  padding: 0;
+  color: var(--ds-text-tertiary);
+}
+.ds-telemetry__legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  font-size: 11px;
+  color: var(--ds-text-secondary);
+}
+.ds-telemetry__key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ds-telemetry__line {
+  display: inline-block;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+}
+.ds-telemetry__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.ds-telemetry__axis {
+  fill: var(--ds-text-tertiary);
+  font-size: 14px;
+}
+.ds-telemetry__break-label {
+  fill: var(--ds-color-danger);
+  font-size: 13px;
+  font-weight: 500;
+}
+.ds-telemetry__rank {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ds-divider);
+}
+.ds-telemetry__rank-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+.ds-telemetry__rank-title {
+  flex: none;
+  font-size: var(--ds-fs-compact);
+  font-weight: var(--ds-weight-medium);
+  color: var(--ds-text-primary);
+  white-space: nowrap;
+}
+.ds-telemetry__rank-tab {
+  flex: none;
+  font-size: var(--ds-fs-caption);
+  color: var(--ds-text-tertiary);
+  white-space: nowrap;
+}
+.ds-telemetry__rank-select {
+  flex: none;
+  height: 26px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+.ds-telemetry__rank-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24px 52px;
+  grid-template-areas:
+    "name value action"
+    "bar bar bar";
+  align-items: center;
+  gap: 4px 8px;
+  padding: 5px 8px;
+  box-sizing: border-box;
+  border-left: 3px solid transparent;
+  border-radius: 6px;
+  background: var(--ds-surface-muted);
+}
+.ds-telemetry__rank-row[data-rank="1"],
+.ds-telemetry__rank-row[data-rank="2"] {
+  border-left-color: var(--ds-color-danger);
+  background: #FEF2F2;
+}
+.ds-telemetry__rank-row[data-rank="3"] {
+  border-left-color: var(--ds-color-warning);
+  background: #FFFBEB;
+}
+.ds-telemetry__rank-name {
+  grid-area: name;
+  min-width: 0;
+  font-size: 11px;
+  color: var(--ds-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ds-telemetry__rank-bar {
+  display: block;
+  grid-area: bar;
+  height: 4px;
+  border-radius: 2px;
+  background: #DBEAFE;
+  overflow: hidden;
+}
+.ds-telemetry__rank-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--ds-color-accent);
+}
+.ds-telemetry__rank-value {
+  grid-area: value;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ds-text-secondary);
+  text-align: right;
+}
+.ds-telemetry__rank-action {
+  grid-area: action;
+  font-size: var(--ds-fs-caption);
+  color: var(--ds-color-accent);
+  text-align: right;
+  white-space: nowrap;
+}
+
 /* 图片产物：灰底画布上居中放原图，只读，不提供编辑与选择元素 */
 .ds-aview--image {
   display: flex;
@@ -1858,6 +2102,24 @@ button.ds-launch-row:hover {
   text-overflow: ellipsis;
 }
 
+/* 文件树分区：对话产物 / 上传资源 */
+.ds-atree__section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ds-atree__section-title {
+  padding: 0 var(--ds-space-2) var(--ds-space-1);
+  font-size: var(--ds-fs-caption);
+  line-height: var(--ds-lh-caption);
+  color: var(--ds-text-secondary);
+}
+.ds-atree__section--resources {
+  margin-top: var(--ds-space-3);
+  padding-top: var(--ds-space-3);
+  border-top: 1px solid var(--ds-divider);
+}
+
 /* 文件夹/文件行：h32、radius-button 8、单行省略 */
 .ds-atree__row {
   display: flex;
@@ -1973,6 +2235,82 @@ button.ds-launch-row:hover {
   transition: opacity var(--ds-t-fast) var(--ds-ease-out), visibility 0s linear var(--ds-t-fast);
 }
 
+/* 会话任务状态：项目只作为分组，不在项目名上展示聚合状态 */
+.ds-task-state {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 46px;
+  height: 18px;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: var(--ds-radius-full);
+  white-space: nowrap;
+  font-size: 11px;
+  line-height: 18px;
+  font-weight: var(--ds-weight-medium);
+  transition: opacity var(--ds-t-fast) var(--ds-ease-out);
+}
+
+/* 有状态时，会话行操作浮在状态位上方，避免常驻操作区挤压会话标题；无状态时保留原占位 */
+.ds-history__row--conversation:not([data-task-status="none"]) .ds-history__row-actions {
+  position: absolute;
+  right: var(--ds-space-3);
+  z-index: 1;
+  margin-left: 0;
+}
+
+.ds-history__row--conversation:hover .ds-task-state,
+.ds-history__row--conversation:focus-within .ds-task-state {
+  opacity: 0;
+}
+
+.ds-task-state[data-status="running"] {
+  width: auto;
+  padding: 0 6px;
+  color: var(--ds-color-accent);
+  background: color-mix(in srgb, var(--ds-color-accent) 10%, var(--ds-surface));
+}
+
+.ds-task-state[data-status="completed"] {
+  color: var(--ds-color-positive);
+  background: color-mix(in srgb, var(--ds-color-positive) 10%, var(--ds-surface));
+}
+
+.ds-task-state[data-status="failed"] {
+  color: var(--ds-color-danger);
+  background: color-mix(in srgb, var(--ds-color-danger) 10%, var(--ds-surface));
+}
+
+.ds-task-state[data-status="waiting"] {
+  color: var(--ds-color-warning);
+  background: color-mix(in srgb, var(--ds-color-warning) 12%, var(--ds-surface));
+}
+
+.ds-task-state__spinner {
+  width: 10px;
+  height: 10px;
+  box-sizing: border-box;
+  border: 1.5px solid color-mix(in srgb, var(--ds-color-accent) 28%, transparent);
+  border-top-color: var(--ds-color-accent);
+  border-radius: var(--ds-radius-full);
+  animation: ds-task-state-spin var(--ds-t-spin) linear infinite;
+}
+
+@keyframes ds-task-state-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-task-state__spinner {
+    animation: none;
+  }
+}
+
 .ds-history__group-head:hover .ds-history__group-actions,
 .ds-history__group-head:focus-within .ds-history__group-actions,
 .ds-history__row:hover .ds-history__row-actions,
@@ -1988,7 +2326,7 @@ button.ds-launch-row:hover {
 .ds-history__group-body {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-2);
+  gap: 3px;
 }
 
 .ds-history__group[data-expanded="false"] > .ds-history__group-body {
@@ -1999,13 +2337,13 @@ button.ds-launch-row:hover {
 .ds-history__project {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-2);
+  gap: 3px;
 }
 
 .ds-history__project-body {
   display: flex;
   flex-direction: column;
-  gap: var(--ds-space-2);
+  gap: 3px;
 }
 
 .ds-history__project[data-expanded="false"] .ds-history__project-body {
@@ -2657,7 +2995,8 @@ button.ds-launch-row:hover {
   display: flex;
   flex-direction: column;
   gap: var(--ds-space-3);
-  max-width: 520px;
+  width: 100%;
+  max-width: none;
   padding: var(--ds-space-4);
   box-sizing: border-box;
   border: 1px solid var(--ds-border);
@@ -3056,6 +3395,13 @@ button.ds-launch-row:hover {
   width: 100%;
 }
 
+/* 欢迎页输入框去掉外层的横向留白，与快捷任务模块左右对齐 */
+.ds-welcome__composer .ds-composer-stage {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+}
+
 /* 快捷任务区块：与输入框同宽 */
 .ds-welcome__suggest-block {
   display: flex;
@@ -3085,8 +3431,8 @@ button.ds-launch-row:hover {
 
 .ds-suggest {
   display: grid;
-  /* 3 张卡：列宽不足 200px 时自动折行，避免标题被压成 3 行 */
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  /* 4 张卡固定 2×2，避免文案长度不同导致列宽抖动 */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--ds-space-3);
   width: 100%;
 }
@@ -3196,7 +3542,7 @@ button.ds-launch-row:hover {
   flex-direction: column;
   width: var(--shell-left-w);
   overflow: hidden;
-  background: var(--ds-surface);
+  background: #F6F6F6;
   border-right: 1px solid var(--ds-divider);
   transition: width var(--ds-t-slow) var(--ds-ease-out);
 }
@@ -3251,6 +3597,11 @@ button.ds-launch-row:hover {
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-width: none;
+}
+.ds-shell__scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .ds-shell__composer {
@@ -3436,6 +3787,13 @@ body {
   flex-direction: column;
   gap: var(--ds-space-3);
   min-width: 0;
+  width: 100%;
+}
+
+/* 回答区所有内容块统一占满输入框内容宽 */
+.pw-turn > * {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .pw-hide {
@@ -3454,6 +3812,11 @@ body {
 .pw-cards {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   gap: var(--ds-space-2);
+  width: 100%;
+}
+
+.pw-cards .ds-docrow {
+  width: 100%;
 }

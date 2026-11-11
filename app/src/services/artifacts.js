@@ -6,6 +6,7 @@ import seed from './seeds/artifact.json';
 import lineChartHtml from './artifacts/charts/line.html?raw';
 import barChartHtml from './artifacts/charts/bar.html?raw';
 import radarChartHtml from './artifacts/charts/radar.html?raw';
+import telemetryChartHtml from './artifacts/charts/telemetry.html?raw';
 import delayPng from '../assets/artifacts/delay-distribution.png?inline';
 
 export const artifactSeed = seed;
@@ -17,6 +18,7 @@ export const ARTIFACT_CATALOG = {
   'art-chart-line': { name: '时延趋势折线图.html', type: 'html' },
   'art-chart-bar': { name: '波束质量对比柱状图.html', type: 'html' },
   'art-chart-radar': { name: '链路健康度雷达图.html', type: 'html' },
+  'art-telemetry': { name: '遥测时序可视化分析.html', type: 'html' },
   'art-png': { name: '链路时延分位分布.png', type: 'png' },
   'tree-file-1': { name: '时延态势与趋势分析.md', type: 'md' },
   'tree-file-2': { name: '异常链路清单.xlsx', type: 'xlsx' },
@@ -119,11 +121,10 @@ export const HTML_SOURCE = `<header class="ds-webpage__head">
   </div>
 </section>`;
 
-/** 文件树：目录 + 文件 */
+/** 文件树：按「对话产物 / 上传资源」两组展示 */
 export const FILE_TREE = {
-  workspace: '工作区 #SAT-01',
-  folder: '时延分析',
-  files: [
+  workspace: '工作区',
+  artifacts: [
     { id: 'tree-file-1', type: 'md', name: '时延态势与趋势分析.md' },
     { id: 'tree-file-2', type: 'xlsx', name: '异常链路清单.xlsx' },
     { id: 'tree-file-3', type: 'docx', name: '7 号链路越限复盘报告.docx' },
@@ -131,7 +132,12 @@ export const FILE_TREE = {
     { id: 'art-chart-line', type: 'html', name: '时延趋势折线图.html' },
     { id: 'art-chart-bar', type: 'html', name: '波束质量对比柱状图.html' },
     { id: 'art-chart-radar', type: 'html', name: '链路健康度雷达图.html' },
+    { id: 'art-telemetry', type: 'html', name: '遥测时序可视化分析.html' },
     { id: 'art-png', type: 'png', name: '链路时延分位分布.png' }
+  ],
+  uploads: [
+    { id: 'upload-1', type: 'csv', name: '时延日志_20261107.csv' },
+    { id: 'upload-2', type: 'xlsx', name: '波束扫描_测试记录.xlsx' }
   ]
 };
 
@@ -141,7 +147,8 @@ const HTML_SOURCES = {
   'tree-file-4': HTML_SOURCE,
   'art-chart-line': lineChartHtml,
   'art-chart-bar': barChartHtml,
-  'art-chart-radar': radarChartHtml
+  'art-chart-radar': radarChartHtml,
+  'art-telemetry': telemetryChartHtml
 };
 
 export function htmlSourceFor(id) {

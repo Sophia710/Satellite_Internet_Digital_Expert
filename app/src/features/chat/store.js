@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { demoData, normalizeSteps, startPlayback } from '../../services/mockApi';
 import { useSessionStore } from '../session/store';
+import { summarizeQuestionTitle } from './title';
 
 /** 演示里唯一带有完整终态的会话 */
 export const COMPLETED_CONVERSATION = 'c11';
@@ -44,6 +45,11 @@ export const useChatStore = defineStore('chat', {
         playback.stop();
         playback = null;
       }
+      if (this.generating && this.conversationId) {
+        const session = useSessionStore();
+        const unread = session.selectedId !== this.conversationId;
+        session.setConversationStatus(this.conversationId, 'waiting', unread);
+      }
       this.generating = false;
     },
 
@@ -75,6 +81,7 @@ export const useChatStore = defineStore('chat', {
 
     openConversation(id) {
       const session = useSessionStore();
+      session.markStatusSeen(id);
       const found = session.findConversation(id);
       const title = found ? found.conv.title : '新会话';
       if (id === COMPLETED_CONVERSATION) {
@@ -112,6 +119,10 @@ export const useChatStore = defineStore('chat', {
       if (!id) {
         id = session.createConversation(null);
       }
+      const conv = session.findConversation(id)?.conv;
+      if (conv && (!conv.title || conv.title === '新会话')) {
+        session.renameConversation(id, summarizeQuestionTitle(value));
+      }
       this.conversationId = id;
       this.title = (session.findConversation(id)?.conv.title) || '新会话';
       this.userText = value;
@@ -126,31 +137,39 @@ export const useChatStore = defineStore('chat', {
       this.reveals = { md: false, code: false, cites: false, cards: false };
       this.think.state = 'running';
       this.generating = true;
+      const session = useSessionStore();
+      if (this.conversationId) session.setConversationStatus(this.conversationId, 'running', false);
 
-      playback = startPlayback({
-        onThinkDone: () => {
-          this.think.state = 'done';
-        },
-        onStep: (index, state) => {
-          const step = this.steps[index];
-          if (!step) return;
-          if (state === 'running') {
-            step.state = 'running';
-            step.tool = step.runningTool;
-            step.dur = step.runningDur;
-            step.detail = step.runningDetail;
-          } else {
-            Object.assign(step, this.applyDone(step));
+      try {
+        playback = startPlayback({
+          onThinkDone: () => {
+            this.think.state = 'done';
+          },
+          onStep: (index, state) => {
+            const step = this.steps[index];
+            if (!step) return;
+            if (state === 'running') {
+              step.state = 'running';
+              step.tool = step.runningTool;
+              step.dur = step.runningDur;
+              step.detail = step.runningDetail;
+            } else {
+              Object.assign(step, this.applyDone(step));
+            }
+          },
+          onReveal: (key) => {
+            this.reveals[key] = true;
+          },
+          onDone: () => {
+            this.generating = false;
+            playback = null;
+            if (this.conversationId) session.setConversationStatus(this.conversationId, 'completed', false);
           }
-        },
-        onReveal: (key) => {
-          this.reveals[key] = true;
-        },
-        onDone: () => {
-          this.generating = false;
-          playback = null;
-        }
-      });
+        });
+      } catch {
+        this.generating = false;
+        if (this.conversationId) session.setConversationStatus(this.conversationId, 'failed', false);
+      }
     },
 
     stop() {

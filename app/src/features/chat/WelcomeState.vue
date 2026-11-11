@@ -22,6 +22,7 @@
           type="button"
           class="ds-suggest__card"
           :aria-label="task.title"
+          :title="task.prompt"
           @click="emit('pick', task.prompt)"
         >
           <span class="ds-suggest__icon" aria-hidden="true">
@@ -61,6 +62,12 @@ const tasks = [
     icon: 'pencil',
     title: '故障案例分析',
     prompt: '请分析时序数据异常，结合历史故障案例定位异常区间和潜在原因。'
+  },
+  {
+    key: 'telemetry',
+    icon: 'chart-line',
+    title: '遥测数据可视化',
+    prompt: '请将遥测数据按时间轴与关键指标进行可视化，生成趋势图并标注异常区间。'
   }
 ];
 </script>

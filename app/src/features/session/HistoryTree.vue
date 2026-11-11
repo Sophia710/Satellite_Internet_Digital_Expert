@@ -125,6 +125,7 @@
                 :class="{ 'is-current': session.selectedId === conv.id, 'is-renaming': isRenaming('conversation', conv.id) }"
                 data-rename-row
                 :data-conv-id="conv.id"
+                :data-task-status="conv.statusUnread && conv.id !== session.selectedId ? conv.status : 'none'"
                 :data-in-project="project.id"
               >
                 <button
@@ -148,6 +149,10 @@
                   @keydown.enter.prevent="commitRename"
                   @keydown.esc.prevent.stop="cancelRename"
                   @blur="commitRename"
+                />
+                <TaskStatus
+                  v-if="!isRenaming('conversation', conv.id) && conv.statusUnread && conv.id !== session.selectedId"
+                  :status="conv.status"
                 />
                 <span class="ds-history__row-actions">
                   <button
@@ -175,6 +180,7 @@
             :class="{ 'is-current': session.selectedId === conv.id, 'is-renaming': isRenaming('conversation', conv.id) }"
             data-rename-row
             :data-conv-id="conv.id"
+            :data-task-status="conv.statusUnread && conv.id !== session.selectedId ? conv.status : 'none'"
             data-in-project=""
           >
             <button
@@ -199,6 +205,10 @@
               @keydown.esc.prevent.stop="cancelRename"
               @blur="commitRename"
             />
+            <TaskStatus
+              v-if="!isRenaming('conversation', conv.id) && conv.statusUnread && conv.id !== session.selectedId"
+              :status="conv.status"
+            />
             <span class="ds-history__row-actions">
               <button
                 type="button"
@@ -222,6 +232,7 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import Icon from '../../shared/ui/Icon.vue';
+import TaskStatus from './TaskStatus.vue';
 import { useSessionStore } from '../session/store';
 import { confirmDialog } from '../../shared/ui/dialog';
 import { openPopover } from '../../shared/ui/popover';

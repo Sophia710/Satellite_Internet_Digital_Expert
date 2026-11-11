@@ -61,6 +61,12 @@ export const useSessionStore = defineStore('session', {
 
     select(id) {
       this.selectedId = id;
+      this.markStatusSeen(id);
+    },
+
+    markStatusSeen(id) {
+      const found = this.findConversation(id);
+      if (found) found.conv.statusUnread = false;
     },
 
     clearSelection() {
@@ -93,6 +99,13 @@ export const useSessionStore = defineStore('session', {
     renameConversation(id, title) {
       const found = this.findConversation(id);
       if (found) found.conv.title = title;
+    },
+
+    setConversationStatus(id, status, unread = false) {
+      const found = this.findConversation(id);
+      if (!found) return;
+      found.conv.status = status || undefined;
+      found.conv.statusUnread = status ? !!unread : false;
     },
 
     renameProject(id, title) {

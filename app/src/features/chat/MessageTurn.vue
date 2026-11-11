@@ -105,54 +105,89 @@
       <div v-if="chat.reveals.cards" class="pw-cards">
         <div data-component="artifact-card" class="ds-docrow">
           <span class="ds-docrow__label">已生成分析产物：</span>
-          <button type="button" class="ds-artcard" data-id="art-md" data-type="md" @click="openArtifact('art-md')">
-            <Icon name="file-md" :size="16" icon-class="ds-artcard__icon" />
-            <span class="ds-artcard__texts">
-              <span class="ds-artcard__name">时延态势与趋势分析.md</span>
-              <span class="ds-artcard__status">Markdown · 18.6 KB · 今天 09:24</span>
-            </span>
-          </button>
+          <div class="ds-artcard" data-id="art-md" data-type="md">
+            <button type="button" class="ds-artcard__main" @click="openArtifact('art-md')">
+              <Icon name="file-md" :size="16" icon-class="ds-artcard__icon" />
+              <span class="ds-artcard__texts">
+                <span class="ds-artcard__name">时延态势与趋势分析.md</span>
+                <span class="ds-artcard__status">Markdown · 18.6 KB · 今天 09:24</span>
+              </span>
+            </button>
+            <button type="button" class="ds-artcard__peek" aria-label="查看" @click.stop="openArtifact('art-md')">
+              <Icon name="eye" :size="16" />
+            </button>
+          </div>
         </div>
         <div data-component="artifact-card" class="ds-docrow">
-          <button type="button" class="ds-artcard" data-id="art-docx" data-type="xlsx" @click="openArtifact('art-docx')">
-            <Icon name="file-text" :size="16" icon-class="ds-artcard__icon" />
-            <span class="ds-artcard__texts">
-              <span class="ds-artcard__name">异常链路清单.xlsx</span>
-              <span class="ds-artcard__status">Excel · 7.2 KB · 今天 09:24</span>
-            </span>
-          </button>
+          <div class="ds-artcard" data-id="art-docx" data-type="xlsx">
+            <button type="button" class="ds-artcard__main" @click="openArtifact('art-docx')">
+              <Icon name="file-text" :size="16" icon-class="ds-artcard__icon" />
+              <span class="ds-artcard__texts">
+                <span class="ds-artcard__name">异常链路清单.xlsx</span>
+                <span class="ds-artcard__status">Excel · 7.2 KB · 今天 09:24</span>
+              </span>
+            </button>
+            <button type="button" class="ds-artcard__peek" aria-label="查看" @click.stop="openArtifact('art-docx')">
+              <Icon name="eye" :size="16" />
+            </button>
+          </div>
         </div>
         <div data-component="artifact-card" class="ds-docrow">
-          <button type="button" class="ds-artcard" data-id="art-chart-line" data-type="html" @click="openArtifact('art-chart-line')">
-            <Icon name="file-code" :size="16" icon-class="ds-artcard__icon" />
-            <span class="ds-artcard__texts">
-              <span class="ds-artcard__name">时延趋势折线图.html</span>
-              <span class="ds-artcard__status">网页 · 24 点分位走势 · 今天 09:24</span>
-            </span>
-          </button>
+          <div class="ds-artcard" data-id="art-chart-line" data-type="html">
+            <button type="button" class="ds-artcard__main" @click="openArtifact('art-chart-line')">
+              <Icon name="file-code" :size="16" icon-class="ds-artcard__icon" />
+              <span class="ds-artcard__texts">
+                <span class="ds-artcard__name">时延趋势折线图.html</span>
+                <span class="ds-artcard__status">网页 · 24 点分位走势 · 今天 09:24</span>
+              </span>
+            </button>
+            <button type="button" class="ds-artcard__peek" aria-label="查看" @click.stop="openArtifact('art-chart-line')">
+              <Icon name="eye" :size="16" />
+            </button>
+          </div>
         </div>
         <div data-component="artifact-card" class="ds-docrow">
-          <button type="button" class="ds-artcard" data-id="art-png" data-type="png" @click="openArtifact('art-png')">
-            <Icon name="image" :size="16" icon-class="ds-artcard__icon" />
-            <span class="ds-artcard__texts">
-              <span class="ds-artcard__name">链路时延分位分布.png</span>
-              <span class="ds-artcard__status">图片 · 1200 × 760 · 今天 09:24</span>
-            </span>
-          </button>
+          <div class="ds-artcard" data-id="art-telemetry" data-type="html">
+            <button type="button" class="ds-artcard__main" @click="openArtifact('art-telemetry')">
+              <Icon name="file-code" :size="16" icon-class="ds-artcard__icon" />
+              <span class="ds-artcard__texts">
+                <span class="ds-artcard__name">遥测时序可视化分析.html</span>
+                <span class="ds-artcard__status">网页 · 4 路参数 · 今天 09:24</span>
+              </span>
+            </button>
+            <button type="button" class="ds-artcard__peek" aria-label="查看" @click.stop="openArtifact('art-telemetry')">
+              <Icon name="eye" :size="16" />
+            </button>
+          </div>
+        </div>
+        <div data-component="artifact-card" class="ds-docrow">
+          <div class="ds-artcard" data-id="art-png" data-type="png">
+            <button type="button" class="ds-artcard__main" @click="openArtifact('art-png')">
+              <Icon name="image" :size="16" icon-class="ds-artcard__icon" />
+              <span class="ds-artcard__texts">
+                <span class="ds-artcard__name">链路时延分位分布.png</span>
+                <span class="ds-artcard__status">图片 · 1200 × 760 · 今天 09:24</span>
+              </span>
+            </button>
+            <button type="button" class="ds-artcard__peek" aria-label="查看" @click.stop="openArtifact('art-png')">
+              <Icon name="eye" :size="16" />
+            </button>
+          </div>
         </div>
       </div>
 
       <div class="ds-msg-actions" role="group" aria-label="回答操作">
-        <button type="button" class="ds-icon-btn ds-icon-btn--sm" aria-label="重新生成" @click="chat.regenerate()">
+        <button type="button" class="ds-icon-btn ds-icon-btn--sm" aria-label="重新生成" title="重新生成" @click="chat.regenerate()">
           <Icon name="refresh" :size="16" />
         </button>
-        <button type="button" class="ds-icon-btn ds-icon-btn--sm" aria-label="复制回答" @click="copyText(COPY_TEXT, '回答')">
+        <button type="button" class="ds-icon-btn ds-icon-btn--sm" aria-label="复制回答" title="复制回答" @click="copyText(COPY_TEXT, '回答')">
           <Icon name="copy" :size="16" />
         </button>
         <button
           type="button"
           class="ds-icon-btn ds-icon-btn--sm"
-          aria-label="赞"
+          aria-label="点赞"
+          title="点赞"
           :aria-pressed="reaction === 'like' ? 'true' : 'false'"
           @click="reaction = reaction === 'like' ? '' : 'like'"
         >
@@ -161,26 +196,12 @@
         <button
           type="button"
           class="ds-icon-btn ds-icon-btn--sm"
-          aria-label="踩"
+          aria-label="点踩"
+          title="点踩"
           :aria-pressed="reaction === 'dislike' ? 'true' : 'false'"
           @click="reaction = reaction === 'dislike' ? '' : 'dislike'"
         >
           <Icon name="thumb-down" :size="16" />
-        </button>
-        <button type="button" class="ds-icon-btn ds-icon-btn--sm" aria-label="基于此回答创建分支">
-          <Icon name="git-branch" :size="16" />
-        </button>
-        <button type="button" class="ds-icon-btn ds-icon-btn--sm" aria-label="分享回答" @click="copyText(COPY_TEXT, '链接')">
-          <Icon name="share" :size="16" />
-        </button>
-        <button
-          type="button"
-          class="ds-icon-btn ds-icon-btn--sm"
-          aria-label="更多操作"
-          aria-haspopup="menu"
-          @click="openMoreMenu"
-        >
-          <Icon name="more-horizontal" :size="16" />
         </button>
         <span v-if="copiedHint" class="ds-msg-actions__time">{{ copiedHint }}</span>
         <span v-else class="ds-msg-actions__time">
@@ -199,7 +220,6 @@ import { useChatStore } from './store';
 import { useArtifactStore } from '../artifact/store';
 import { mdToHtml } from '../../shared/lib/markdown';
 import { lookupArtifact } from '../../services/artifacts';
-import { openPopover } from '../../shared/ui/popover';
 
 const chat = useChatStore();
 const artifact = useArtifactStore();
@@ -266,23 +286,6 @@ async function copyText(value, label) {
 function openArtifact(id) {
   const detail = lookupArtifact(id);
   if (detail) artifact.open(detail);
-}
-
-function openMoreMenu(event) {
-  openPopover({
-    anchor: event.currentTarget,
-    align: 'end',
-    items: [
-      { icon: 'share', label: '复制链接', action: 'link' },
-      { icon: 'copy', label: '导出为 Markdown', action: 'export' },
-      { divider: true },
-      { icon: 'alert-triangle', label: '反馈问题', action: 'feedback' }
-    ],
-    onSelect: (action) => {
-      if (action === 'link') copyText(COPY_TEXT, '链接');
-      else if (action === 'export') copyText(COPY_TEXT, '内容');
-    }
-  });
 }
 
 /* 新一轮重新生成时折叠详情，回到 running 展示 */

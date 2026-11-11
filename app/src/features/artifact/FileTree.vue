@@ -17,41 +17,52 @@
         </button>
       </div>
 
-      <button
-        type="button"
-        class="ds-atree__row ds-atree__row--folder"
-        role="treeitem"
-        :aria-expanded="expanded ? 'true' : 'false'"
-        @click="expanded = !expanded"
-      >
-        <Icon :name="expanded ? 'chevron-down' : 'chevron-right'" :size="16" icon-class="ds-atree__chev" />
-        <Icon :name="expanded ? 'folder-open' : 'folder'" :size="16" icon-class="ds-atree__folder-ic" />
-        <span class="ds-atree__label">{{ tree.folder }}</span>
-      </button>
+      <div class="ds-atree__section" role="group" aria-label="对话产物">
+        <div class="ds-atree__section-title">对话产物</div>
+        <div class="ds-atree__group">
+          <button
+            v-for="file in tree.artifacts"
+            :key="file.id"
+            type="button"
+            class="ds-atree__row ds-atree__row--file"
+            :class="{ 'is-current': isCurrent(file) }"
+            role="treeitem"
+            :aria-current="isCurrent(file) ? 'page' : undefined"
+            :data-id="file.id"
+            :data-type="file.type"
+            @click="openFile(file)"
+          >
+            <Icon :name="iconForType(file.type)" :size="16" />
+            <span class="ds-atree__label">{{ file.name }}</span>
+          </button>
+        </div>
+      </div>
 
-      <div v-show="expanded" class="ds-atree__group" role="group">
-        <button
-          v-for="file in tree.files"
-          :key="file.id"
-          type="button"
-          class="ds-atree__row ds-atree__row--file ds-atree__row--indent"
-          :class="{ 'is-current': isCurrent(file) }"
-          role="treeitem"
-          :aria-current="isCurrent(file) ? 'page' : undefined"
-          :data-id="file.id"
-          :data-type="file.type"
-          @click="openFile(file)"
-        >
-          <Icon :name="iconForType(file.type)" :size="16" />
-          <span class="ds-atree__label">{{ file.name }}</span>
-        </button>
+      <div class="ds-atree__section ds-atree__section--resources" role="group" aria-label="上传资源">
+        <div class="ds-atree__section-title">上传资源</div>
+        <div class="ds-atree__group">
+          <button
+            v-for="file in tree.uploads"
+            :key="file.id"
+            type="button"
+            class="ds-atree__row ds-atree__row--file"
+            :class="{ 'is-current': isCurrent(file) }"
+            role="treeitem"
+            :aria-current="isCurrent(file) ? 'page' : undefined"
+            :data-id="file.id"
+            :data-type="file.type"
+            @click="openFile(file)"
+          >
+            <Icon :name="iconForType(file.type)" :size="16" />
+            <span class="ds-atree__label">{{ file.name }}</span>
+          </button>
+        </div>
       </div>
     </div>
   </aside>
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import Icon from '../../shared/ui/Icon.vue';
 import { useArtifactStore } from './store';
 import { FILE_TREE } from '../../services/artifacts';
@@ -59,7 +70,6 @@ import { iconForType } from '../../shared/lib/markdown';
 
 const artifact = useArtifactStore();
 const tree = FILE_TREE;
-const expanded = ref(true);
 
 /** 同一个文件可能从对话卡（art-md）或文件树（tree-file-1）打开，按文件名回指当前项 */
 function isCurrent(file) {

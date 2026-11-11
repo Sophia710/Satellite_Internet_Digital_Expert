@@ -14,7 +14,7 @@
 
       <div class="ds-shell__header-slot" data-region="center-header">
         <div class="pw-head">
-          <div v-if="chat.generating && chat.title" data-component="conversation-header" class="ds-convhead pw-head__main">
+          <div v-if="chat.showHeaderTitle && chat.title" data-component="conversation-header" class="ds-convhead pw-head__main">
             <span class="ds-convhead__title">{{ chat.title }}</span>
           </div>
           <span class="pw-head__spacer" aria-hidden="true"></span>
