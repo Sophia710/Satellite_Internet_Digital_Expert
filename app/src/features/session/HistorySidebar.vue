@@ -14,7 +14,27 @@
       </button>
     </div>
 
-    <HistoryTree @open="(id) => emit('open', id)" @deleted="(id) => emit('deleted', id)" />
+    <nav class="pw-tools" aria-label="工具">
+      <div class="pw-tools__title">工具</div>
+      <button
+        type="button"
+        class="pw-tools__item"
+        :class="{ 'is-active': skillsOpen }"
+        :aria-current="skillsOpen ? 'page' : undefined"
+        @click="emit('skills')"
+      >
+        <span class="pw-tools__icon">
+          <Icon name="grid" :size="18" />
+        </span>
+        <span class="pw-tools__label">技能中心</span>
+      </button>
+    </nav>
+
+    <HistoryTree
+      :selection-muted="skillsOpen"
+      @open="(id) => emit('open', id)"
+      @deleted="(id) => emit('deleted', id)"
+    />
 
     <div data-component="user-card" class="ds-usercard">
       <span class="ds-usercard__avatar">秦</span>
@@ -27,5 +47,9 @@
 import Icon from '../../shared/ui/Icon.vue';
 import HistoryTree from './HistoryTree.vue';
 
-const emit = defineEmits(['new', 'open', 'deleted']);
+defineProps({
+  skillsOpen: { type: Boolean, default: false }
+});
+
+const emit = defineEmits(['new', 'open', 'deleted', 'skills']);
 </script>

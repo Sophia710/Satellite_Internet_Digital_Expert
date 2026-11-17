@@ -1,7 +1,13 @@
 <template>
   <WorkbenchLayout>
     <template #left>
-      <HistorySidebar @new="startNewChat" @open="openConversation" @deleted="onDeleted" />
+      <HistorySidebar
+        :skills-open="skillsOpen"
+        @new="startNewChat"
+        @open="openConversation"
+        @deleted="onDeleted"
+        @skills="toggleSkills"
+      />
     </template>
 
     <template #center>
@@ -11,16 +17,21 @@
     <template #right>
       <ArtifactPanel @navigate="onArtifactNavigate" />
     </template>
+
+    <template #overlay>
+      <SkillCenter v-if="skillsOpen" @close="skillsOpen = false" />
+    </template>
   </WorkbenchLayout>
 </template>
 
 <script setup>
-import { onMounted, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import WorkbenchLayout from '../layouts/WorkbenchLayout.vue';
 import HistorySidebar from '../features/session/HistorySidebar.vue';
 import ConversationPane from '../features/chat/ConversationPane.vue';
 import ArtifactPanel from '../features/artifact/ArtifactPanel.vue';
+import SkillCenter from '../features/skills/SkillCenter.vue';
 import { useChatStore } from '../features/chat/store';
 import { useSessionStore } from '../features/session/store';
 import { useArtifactStore } from '../features/artifact/store';
@@ -31,12 +42,19 @@ const router = useRouter();
 const chat = useChatStore();
 const session = useSessionStore();
 const artifact = useArtifactStore();
+const skillsOpen = ref(false);
+
+function toggleSkills() {
+  skillsOpen.value = !skillsOpen.value;
+}
 
 function openConversation(id) {
+  skillsOpen.value = false;
   router.push(`/w/${id}`);
 }
 
 function startNewChat() {
+  skillsOpen.value = false;
   session.clearSelection();
   chat.showWelcome();
   router.push('/');
@@ -61,6 +79,8 @@ function onDeleted(id) {
 function applyRoute() {
   const convId = route.params.conversationId;
   const artId = route.params.artifactId;
+
+  skillsOpen.value = false;
 
   if (convId) {
     session.select(convId);

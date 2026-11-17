@@ -47,6 +47,8 @@
         <slot name="right" />
       </div>
     </aside>
+
+    <slot name="overlay" />
   </div>
 </template>
 

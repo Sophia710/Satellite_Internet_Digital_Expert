@@ -55,7 +55,7 @@
             <div
               class="ds-history__row ds-history__row--project"
               :class="{
-                'is-parent': project.conversations.some((c) => c.id === session.selectedId),
+                'is-parent': isParent(project),
                 'is-renaming': isRenaming('project', project.id)
               }"
               data-rename-row
@@ -122,10 +122,10 @@
                 v-for="conv in session.sortedConversations(project)"
                 :key="conv.id"
                 class="ds-history__row ds-history__row--conversation"
-                :class="{ 'is-current': session.selectedId === conv.id, 'is-renaming': isRenaming('conversation', conv.id) }"
+                :class="{ 'is-current': isCurrent(conv.id), 'is-renaming': isRenaming('conversation', conv.id) }"
                 data-rename-row
                 :data-conv-id="conv.id"
-                :data-task-status="conv.statusUnread && conv.id !== session.selectedId ? conv.status : 'none'"
+                :data-task-status="conv.statusUnread && !isCurrent(conv.id) ? conv.status : 'none'"
                 :data-in-project="project.id"
               >
                 <button
@@ -151,7 +151,7 @@
                   @blur="commitRename"
                 />
                 <TaskStatus
-                  v-if="!isRenaming('conversation', conv.id) && conv.statusUnread && conv.id !== session.selectedId"
+                  v-if="!isRenaming('conversation', conv.id) && conv.statusUnread && !isCurrent(conv.id)"
                   :status="conv.status"
                 />
                 <span class="ds-history__row-actions">
@@ -177,10 +177,10 @@
             v-for="conv in session.sortedRecent"
             :key="conv.id"
             class="ds-history__row ds-history__row--conversation ds-history__row--recent"
-            :class="{ 'is-current': session.selectedId === conv.id, 'is-renaming': isRenaming('conversation', conv.id) }"
+            :class="{ 'is-current': isCurrent(conv.id), 'is-renaming': isRenaming('conversation', conv.id) }"
             data-rename-row
             :data-conv-id="conv.id"
-            :data-task-status="conv.statusUnread && conv.id !== session.selectedId ? conv.status : 'none'"
+            :data-task-status="conv.statusUnread && !isCurrent(conv.id) ? conv.status : 'none'"
             data-in-project=""
           >
             <button
@@ -206,7 +206,7 @@
               @blur="commitRename"
             />
             <TaskStatus
-              v-if="!isRenaming('conversation', conv.id) && conv.statusUnread && conv.id !== session.selectedId"
+              v-if="!isRenaming('conversation', conv.id) && conv.statusUnread && !isCurrent(conv.id)"
               :status="conv.status"
             />
             <span class="ds-history__row-actions">
@@ -238,7 +238,19 @@ import { confirmDialog } from '../../shared/ui/dialog';
 import { openPopover } from '../../shared/ui/popover';
 
 const emit = defineEmits(['open']);
+const props = defineProps({
+  selectionMuted: { type: Boolean, default: false }
+});
 const session = useSessionStore();
+const activeId = computed(() => (props.selectionMuted ? null : session.selectedId));
+
+function isCurrent(id) {
+  return activeId.value === id;
+}
+
+function isParent(project) {
+  return project.conversations.some((conv) => isCurrent(conv.id));
+}
 
 const groups = [
   { key: 'projects', label: '项目' },
