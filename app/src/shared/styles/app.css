@@ -4118,6 +4118,9 @@ body {
   border-radius: var(--ds-radius-button);
   background: var(--ds-surface-muted);
   color: var(--ds-text-primary);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .ds-skill-card__names {
@@ -4196,6 +4199,9 @@ body {
   border-radius: var(--ds-radius-button);
   background: var(--ds-surface-muted);
   color: var(--ds-text-primary);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .ds-skill-modal__title {

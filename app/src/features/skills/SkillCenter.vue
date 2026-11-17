@@ -52,9 +52,7 @@
             @click="openSkill(skill, $event)"
           >
             <span class="ds-skill-card__head">
-              <span class="ds-skill-card__icon">
-                <Icon :name="skill.icon" :size="20" />
-              </span>
+              <span class="ds-skill-card__icon" aria-hidden="true">{{ skillInitial(skill.name) }}</span>
               <span class="ds-skill-card__names">
                 <span class="ds-skill-card__name">{{ skill.name }}</span>
                 <span class="ds-skill-card__category">{{ skill.category }}</span>
@@ -84,9 +82,7 @@
         :aria-label="`${activeSkill.name}技能详情`"
       >
         <header class="ds-skill-modal__head">
-          <span class="ds-skill-modal__icon">
-            <Icon :name="activeSkill.icon" :size="24" />
-          </span>
+          <span class="ds-skill-modal__icon" aria-hidden="true">{{ skillInitial(activeSkill.name) }}</span>
           <div class="ds-skill-modal__title">
             <h2>{{ activeSkill.name }}</h2>
             <p>{{ activeSkill.category }}</p>
@@ -132,6 +128,10 @@ let lastTrigger = null;
 
 const filtered = computed(() => filterSkills(query.value));
 const structureText = computed(() => (activeSkill.value ? skillStructure(activeSkill.value.id) : ''));
+
+function skillInitial(name) {
+  return String(name || '').trim().slice(0, 1);
+}
 
 function openSkill(skill, event) {
   lastTrigger = event?.currentTarget || null;
