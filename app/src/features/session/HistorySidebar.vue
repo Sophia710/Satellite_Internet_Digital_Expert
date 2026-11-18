@@ -28,10 +28,22 @@
         </span>
         <span class="pw-tools__label">技能中心</span>
       </button>
+      <button
+        type="button"
+        class="pw-tools__item"
+        :class="{ 'is-active': mcpOpen }"
+        :aria-current="mcpOpen ? 'page' : undefined"
+        @click="emit('mcp')"
+      >
+        <span class="pw-tools__icon">
+          <Icon name="git-branch" :size="18" />
+        </span>
+        <span class="pw-tools__label">MCP</span>
+      </button>
     </nav>
 
     <HistoryTree
-      :selection-muted="skillsOpen"
+      :selection-muted="skillsOpen || mcpOpen"
       @open="(id) => emit('open', id)"
       @deleted="(id) => emit('deleted', id)"
     />
@@ -48,8 +60,9 @@ import Icon from '../../shared/ui/Icon.vue';
 import HistoryTree from './HistoryTree.vue';
 
 defineProps({
-  skillsOpen: { type: Boolean, default: false }
+  skillsOpen: { type: Boolean, default: false },
+  mcpOpen: { type: Boolean, default: false }
 });
 
-const emit = defineEmits(['new', 'open', 'deleted', 'skills']);
+const emit = defineEmits(['new', 'open', 'deleted', 'skills', 'mcp']);
 </script>

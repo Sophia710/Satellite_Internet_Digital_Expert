@@ -3,10 +3,12 @@
     <template #left>
       <HistorySidebar
         :skills-open="skillsOpen"
+        :mcp-open="mcpOpen"
         @new="startNewChat"
         @open="openConversation"
         @deleted="onDeleted"
         @skills="toggleSkills"
+        @mcp="toggleMcp"
       />
     </template>
 
@@ -20,6 +22,7 @@
 
     <template #overlay>
       <SkillCenter v-if="skillsOpen" @close="skillsOpen = false" />
+      <McpCenter v-if="mcpOpen" @close="mcpOpen = false" />
     </template>
   </WorkbenchLayout>
 </template>
@@ -32,6 +35,7 @@ import HistorySidebar from '../features/session/HistorySidebar.vue';
 import ConversationPane from '../features/chat/ConversationPane.vue';
 import ArtifactPanel from '../features/artifact/ArtifactPanel.vue';
 import SkillCenter from '../features/skills/SkillCenter.vue';
+import McpCenter from '../features/mcp/McpCenter.vue';
 import { useChatStore } from '../features/chat/store';
 import { useSessionStore } from '../features/session/store';
 import { useArtifactStore } from '../features/artifact/store';
@@ -43,18 +47,29 @@ const chat = useChatStore();
 const session = useSessionStore();
 const artifact = useArtifactStore();
 const skillsOpen = ref(false);
+const mcpOpen = ref(false);
 
 function toggleSkills() {
-  skillsOpen.value = !skillsOpen.value;
+  const next = !skillsOpen.value;
+  skillsOpen.value = next;
+  if (next) mcpOpen.value = false;
+}
+
+function toggleMcp() {
+  const next = !mcpOpen.value;
+  mcpOpen.value = next;
+  if (next) skillsOpen.value = false;
 }
 
 function openConversation(id) {
   skillsOpen.value = false;
+  mcpOpen.value = false;
   router.push(`/w/${id}`);
 }
 
 function startNewChat() {
   skillsOpen.value = false;
+  mcpOpen.value = false;
   session.clearSelection();
   chat.showWelcome();
   router.push('/');
@@ -81,6 +96,7 @@ function applyRoute() {
   const artId = route.params.artifactId;
 
   skillsOpen.value = false;
+  mcpOpen.value = false;
 
   if (convId) {
     session.select(convId);
